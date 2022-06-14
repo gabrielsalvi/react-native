@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, Text } from 'react-native';
-import styles from './styles'
+import styles from './styles';
 
 export default (props) => {
     const stylesButton = [styles.button]
@@ -11,6 +11,7 @@ export default (props) => {
     return (
         <Pressable 
             style={stylesButton}
+            onPress={() => props.onPress(props.label)}
         >
             <Text style={styles.symbol}>{props.label}</Text>
         </Pressable>

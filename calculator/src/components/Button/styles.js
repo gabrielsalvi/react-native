@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 
-const size = 80;
+const size = 83;
 
 const styles = StyleSheet.create({
     button: {
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         width: size,
         height: size,
         borderRadius: size / 2,
-        backgroundColor: "#383838",
+        backgroundColor: "#2A2A2A",
         margin: 5
     },
     operationButton: {
