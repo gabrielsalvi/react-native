@@ -14,9 +14,13 @@ export default class Calculator extends Component {
         super(props)
         
         this.state = { ...initialState }
+        this.history = [initialState]
     }
 
-    changeState = (newState) => this.setState(newState)
+    changeState = (newState) => {
+        this.history.push(this.state)
+        this.setState(newState)
+    }
 
     displayText = (newSymbol) => {
         const display = this.state.display
@@ -28,7 +32,12 @@ export default class Calculator extends Component {
 
     pressedButton = (symbol) => this.displayText(symbol)
 
-    clearDisplay = () => this.changeState(initialState)
+    deleteDigit = () => this.setState(this.history.pop())
+
+    clearDisplay = () => {
+        this.changeState(initialState)
+        this.history = []
+    }
 
     render() {
         return (
@@ -53,7 +62,7 @@ export default class Calculator extends Component {
                     <Button label="+" onPress={this.pressedButton} operator />
                     <Button label="0" onPress={this.pressedButton} />
                     <Button label="." onPress={this.pressedButton} />
-                    <Button label="<x" onPress={this.pressedButton} />
+                    <Button label="<x" onPress={this.deleteDigit} />
                     <Button label="=" onPress={this.pressedButton} operator />
                 </View>
             </>
