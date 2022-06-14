@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 
-const size = 83;
+const size = Dimensions.get('window').width / 4.8
 
 const styles = StyleSheet.create({
     button: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
     symbol: {
         fontFamily: "Arial",
-        fontSize: size / 2,
+        fontSize: 40,
         padding: 8,
         color: "#fff"
     }
