@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import Button from '../Button'
-import Display from '../Display'
+import Button from '../components/Button'
+import Display from '../components/Display'
 import styles from './styles'
 
 const initialState = {
@@ -32,6 +32,19 @@ export default class Calculator extends Component {
 
     pressedButton = (symbol) => this.displayText(symbol)
 
+    pressedOperator = (operator) => {
+        if (operator === "=") {
+            try {
+                this.changeState({
+                    display: eval(`${this.state.display}`)
+                })
+                this.history = [initialState]
+            } catch (e) {
+                console.warn("Opa! Algo deu errado...")
+            }
+        }
+    }
+
     deleteDigit = () => this.setState(this.history.pop())
 
     clearDisplay = () => {
@@ -51,7 +64,7 @@ export default class Calculator extends Component {
                     <Button label="7" onPress={this.pressedButton} />
                     <Button label="8" onPress={this.pressedButton} />
                     <Button label="9" onPress={this.pressedButton} />
-                    <Button label="x" onPress={this.pressedButton} operator />
+                    <Button label="*" onPress={this.pressedButton} operator />
                     <Button label="4" onPress={this.pressedButton} />
                     <Button label="5" onPress={this.pressedButton} />
                     <Button label="6" onPress={this.pressedButton} />
@@ -63,7 +76,7 @@ export default class Calculator extends Component {
                     <Button label="0" onPress={this.pressedButton} />
                     <Button label="." onPress={this.pressedButton} />
                     <Button label="<x" onPress={this.deleteDigit} />
-                    <Button label="=" onPress={this.pressedButton} operator />
+                    <Button label="=" onPress={this.pressedOperator} operator />
                 </View>
             </>
         )
