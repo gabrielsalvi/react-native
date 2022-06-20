@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, Modal } from 'react-native'
+import { View, StyleSheet, Text, Modal } from 'react-native'
+import LevelSelectionButton from './LevelSelectionButton'
 
 export default props => {
     return (
@@ -12,21 +13,9 @@ export default props => {
             <View style={styles.frame}>
                 <View style={styles.container}>
                     <Text style={styles.title}>Select the Level</Text>
-                    <TouchableOpacity
-                        style={[styles.button, styles.bgEasy]}
-                        onPress={() => props.onLevelSelected(0.1)}>
-                        <Text style={styles.buttonLabel}>Easy</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        style={[styles.button, styles.bgNormal]}
-                        onPress={() => props.onLevelSelected(0.2)}>
-                        <Text style={styles.buttonLabel}>Normal</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        style={[styles.button, styles.bgHard]}
-                        onPress={() => props.onLevelSelected(0.3)}>
-                        <Text style={styles.buttonLabel}>Hard</Text>
-                    </TouchableOpacity>
+                    <LevelSelectionButton level='Easy' onLevelSelected={props.onLevelSelected}/>
+                    <LevelSelectionButton level='Normal' onLevelSelected={props.onLevelSelected} />
+                    <LevelSelectionButton level='Hard' onLevelSelected={props.onLevelSelected} />
                 </View>
             </View>
         </Modal>
@@ -49,23 +38,5 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         fontWeight: 'bold',
-    },
-    button: {
-        marginTop: 10,
-        padding: 5,
-    },
-    buttonLabel: {
-        fontSize: 20,
-        color: '#EEE',
-        fontWeight: 'bold',
-    },
-    bgEasy: {
-        backgroundColor: '#49b65d'
-    },
-    bgNormal: {
-        backgroundColor: '#2765F7'
-    },
-    bgHard: {
-        backgroundColor: '#F26337'
     }
 })
