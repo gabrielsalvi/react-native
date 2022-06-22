@@ -1,16 +1,12 @@
 import React from 'react'
-import { Button, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import CentralText from '../components/CentralText'
+import NextScreenButton from '../components/NextScreenButton'
 
 export default props => (
     <View style={styles.container}>
         <CentralText bgColor={'purple'}>Screen B</CentralText>
-        <Button 
-            title='Next'
-            onPress={() => 
-                props.navigation.navigate('ScreenC')
-            } 
-        />
+        <NextScreenButton {... props} nextScreen={'ScreenC'}/>
     </View>
 )
 
