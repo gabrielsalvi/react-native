@@ -1,4 +1,4 @@
 import React from 'react'
-import Routes from './src/Routes'
+import Tab from './src/Tab'
 
-export default (props) => <Routes />
+export default (props) => <Tab />
