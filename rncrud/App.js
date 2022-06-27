@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import UserForm from './src/views/UserForm';
 import UserList from './src/views/UserList';
 
@@ -23,20 +24,22 @@ export default () => (
                     headerTitleAlign: 'left',
                 }}
             >
-                <Stack.Screen name="UserList" component={UserForm} options={({ navigation }) => {
+                <Stack.Screen name="UserList" component={UserList} options={({ navigation }) => {
                         return {
                             title: 'List of Users',
                             headerRight: () => (
-                                <Button
+                                <Icon.Button
                                     onPress={() => navigation.navigate("UserForm")}
                                     type="clear"
-                                    title="New User"
+                                    name="plus"
+                                    color="#000"
+                                    size={30}
                                 />
                             )
                         }
                     }} 
                 />
-                <Stack.Screen name="UserForm" component={UserList} options={{title: 'Registration Form'}} />
+                <Stack.Screen name="UserForm" component={UserForm} options={{title: 'Registration Form'}} />
             </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaView>
