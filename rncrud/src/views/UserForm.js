@@ -4,13 +4,21 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export default class UserForm extends Component {
 
-    constructor () {
-        super();
-        this.state = {
-            name: '',
-            occupation: '',
-            avatarUrl: ''
-        }
+    constructor (props) {
+        super(props);
+        const user = props.route.params
+
+        this.state = 
+            user ? {
+                name: user.name,
+                occupation: user.occupation,
+                avatarUrl: user.avatarUrl
+            } 
+            : {
+                name: '',
+                occupation: '',
+                avatarUrl: ''
+            }
     }
 
     onChangeText = (text, textInput) => {
@@ -25,7 +33,7 @@ export default class UserForm extends Component {
             <View style={styles.container}>
                 <TextInput 
                     style={textInputStyle} 
-                    placeholder='Name' 
+                    placeholder='Name'
                     value={this.state.name} 
                     onChangeText={(text) => this.onChangeText(text, 'name')}
                 />
