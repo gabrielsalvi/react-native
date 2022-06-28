@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,36 +11,36 @@ const Stack = createNativeStackNavigator()
 export default () => (
     <SafeAreaView style={{ flex : 1 }}>
         <NavigationContainer>
-            <Stack.Navigator 
-                initialRouteName='UserList' 
-                screenOptions={{
-                    headerStyle: {
-                        backgroundColor: '#000',
-                    },
-                    headerTitleStyle: {
-                        fontSize: 20,
-                    },
-                    headerTintColor: '#46E74B',
-                    headerTitleAlign: 'left',
-                }}
-            >
-                <Stack.Screen name="UserList" component={UserList} options={({ navigation }) => {
-                        return {
-                            title: 'List of Users',
-                            headerRight: () => (
-                                <Icon.Button
-                                    onPress={() => navigation.navigate("UserForm")}
-                                    type="clear"
-                                    name="plus"
-                                    color="#000"
-                                    size={30}
-                                />
-                            )
-                        }
-                    }} 
-                />
+            <Stack.Navigator initialRouteName='UserList' screenOptions={navigatorScreenOptions}>
+                <Stack.Screen name="UserList" component={UserList} options={userListOptions} />
                 <Stack.Screen name="UserForm" component={UserForm} options={{title: 'Registration Form'}} />
             </Stack.Navigator>
         </NavigationContainer>
     </SafeAreaView>
 )
+
+const navigatorScreenOptions = {
+    headerStyle: {
+        backgroundColor: '#000',
+    },
+    headerTitleStyle: {
+        fontSize: 20,
+    },
+    headerTintColor: '#46E74B',
+    headerTitleAlign: 'left',
+}
+
+const userListOptions = ({ navigation }) => {
+    return {
+        title: 'List of Users',
+        headerRight: () => (
+            <Icon
+                onPress={() => navigation.navigate("UserForm")}
+                name="plus-circle"
+                color="#46E74B"
+                size={30}
+                solid
+            />
+        )
+    }
+}
