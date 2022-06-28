@@ -4,15 +4,18 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Avatar, ListItem } from "@rneui/themed";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import users from '../data/users';
+import UsersContext from '../context/UsersContext';
 
 export default class App extends Component {    
-    
+    static contextType = UsersContext
+
+    users = this.context.state.users
+
     confirmUserDeletion = (user) => {
         Alert.alert('Delete User', `Do you want to delete ${user.name}?`, [
             {
                 text: 'Yes',
-                onPress: () => console.log('deleted')
+                onPress: () => console.log('delete')
             },
             {
                 text: 'Nope'
@@ -62,7 +65,7 @@ export default class App extends Component {
       return (
         <FlatList
           keyExtractor={this.keyExtractor}
-          data={users}
+          data={this.users}
           renderItem={this.renderItem}
         />
       )
