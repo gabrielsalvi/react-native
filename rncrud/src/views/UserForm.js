@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { TouchableHighlight } from 'react-native';
 
 export default class UserForm extends Component {
 
@@ -49,7 +49,7 @@ export default class UserForm extends Component {
                     value={this.state.avatarUrl} 
                     onChangeText={(text) => this.onChangeText(text, 'avatarUrl')}
                 />
-                <TouchableHighlight style={buttonStyle}>
+                <TouchableHighlight style={buttonStyle} >
                     <Text style={styles.text}>Save</Text>
                 </TouchableHighlight>
             </View>
