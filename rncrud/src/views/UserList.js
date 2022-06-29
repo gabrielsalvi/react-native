@@ -9,13 +9,16 @@ import UsersContext from '../context/UsersContext';
 export default class App extends Component {    
     static contextType = UsersContext
 
-    users = this.context.state.users
+    dispatch = this.context.dispatch
 
-    confirmUserDeletion = (user) => {
-        Alert.alert('Delete User', `Do you want to delete ${user.name}?`, [
+    confirmUserDeletion = (user) => {        
+        Alert.alert('Delete User', `Do you want to delete the user ${user.name}?`, [
             {
                 text: 'Yes',
-                onPress: () => console.log('delete')
+                onPress: () => this.dispatch({
+                    type: 'delete_user',
+                    payload: user.id
+                })
             },
             {
                 text: 'Nope'
@@ -37,7 +40,7 @@ export default class App extends Component {
 
     navigate = (location, param) => this.props.navigation.navigate(location, param)
 
-    keyExtractor = (item, index) => index.toString()
+    keyExtractor = (item) => item.id.toString()
 
     renderItem = ({ item: user }) => (
       <ListItem onPress={() => this.navigate('UserForm', user)} bottomDivider>
@@ -65,7 +68,7 @@ export default class App extends Component {
       return (
         <FlatList
           keyExtractor={this.keyExtractor}
-          data={this.users}
+          data={this.context.state.users}
           renderItem={this.renderItem}
         />
       )
