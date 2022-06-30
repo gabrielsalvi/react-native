@@ -18,7 +18,7 @@ export default class UserList extends Component {
             {
                 text: 'Yes',
                 onPress: () => this.context.dispatch({
-                    type: 'delete_user',
+                    type: 'deleteUser',
                     payload: user.id
                 })
             },
@@ -45,7 +45,7 @@ export default class UserList extends Component {
     keyExtractor = (item) => item.id.toString()
 
     renderItem = ({ item: user }) => (
-      <ListItem onPress={() => this.navigate('UserForm', user)} bottomDivider>
+      <ListItem bottomDivider>
         <Avatar source={{uri: user.avatarUrl}} />
         <ListItem.Content>
           <ListItem.Title>{user.name}</ListItem.Title>
