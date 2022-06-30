@@ -6,16 +6,18 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import UsersContext from '../context/UsersContext';
 
-export default class App extends Component {    
+export default class UserList extends Component {    
     static contextType = UsersContext
 
-    dispatch = this.context.dispatch
+    constructor(props) {
+        super(props)
+    }
 
     confirmUserDeletion = (user) => {        
         Alert.alert('Delete User', `Do you want to delete the user ${user.name}?`, [
             {
                 text: 'Yes',
-                onPress: () => this.dispatch({
+                onPress: () => this.context.dispatch({
                     type: 'delete_user',
                     payload: user.id
                 })

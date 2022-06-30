@@ -5,22 +5,25 @@ import UsersContext from '../context/UsersContext';
 
 export default class UserForm extends Component {
     static contextType = UsersContext
-    dispatch = this.context.dispatch
+    
+    constructor (props) {
+        super(props)
 
-    user = this.props.route.params
+        const user = props.route.params;
 
-    state = 
-        this.user ? {
-            id: this.user.id,
-            name: this.user.name,
-            occupation: this.user.occupation,
-            avatarUrl: this.user.avatarUrl
-        } 
-        : {
-            name: '',
-            occupation: '',
-            avatarUrl: ''
-        }
+        this.state =
+            user ? {
+                id: user.id,
+                name: user.name,
+                occupation: user.occupation,
+                avatarUrl: user.avatarUrl
+            } 
+            : {
+                name: '',
+                occupation: '',
+                avatarUrl: ''
+            }
+    }
 
     onChangeText = (text, textInput) => {
         this.setState({ [textInput] : text })
@@ -33,7 +36,7 @@ export default class UserForm extends Component {
             ...this.state
         }
 
-        this.dispatch({
+        this.context.dispatch({
             type: user.id ? 'update_user' : 'create_user',
             payload: user
         })
