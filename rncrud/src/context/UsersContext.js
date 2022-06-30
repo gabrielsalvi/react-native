@@ -17,7 +17,18 @@ const createUser = (state, action) => {
         users: [...users, user]
     }
 
-    console.log(newState)
+    return newState
+}
+
+const updateUser = (state, action) => {
+    const updateUser = action.payload
+
+    const newState = {
+        ...state,
+        users: state.users.map(user => user.id === updateUser.id ? updateUser : user)
+    }
+
+    console.log(newState.users.map(u => u.name))
 
     return newState
 }
@@ -40,6 +51,9 @@ export const UsersProvider = props => {
             case 'create_user':
                 console.log('insertt')
                 return createUser(state, action)
+            case 'update_user':
+                console.log('updateee')
+                return updateUser(state, action)
             case 'delete_user':
                 console.log('delett')
                 return deleteUser(state, action)

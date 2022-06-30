@@ -34,7 +34,7 @@ export default class UserForm extends Component {
         }
 
         this.dispatch({
-            type: 'create_user',
+            type: user.id ? 'update_user' : 'create_user',
             payload: user
         })
 
