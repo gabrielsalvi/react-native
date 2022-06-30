@@ -1,28 +1,44 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableHighlight } from 'react-native';
+import UsersContext from '../context/UsersContext';
 
 export default class UserForm extends Component {
+    static contextType = UsersContext
+    dispatch = this.context.dispatch
 
-    constructor (props) {
-        super(props);
-        const user = props.route.params
+    user = this.props.route.params
 
-        this.state = 
-            user ? {
-                name: user.name,
-                occupation: user.occupation,
-                avatarUrl: user.avatarUrl
-            } 
-            : {
-                name: '',
-                occupation: '',
-                avatarUrl: ''
-            }
-    }
+    state = 
+        this.user ? {
+            id: this.user.id,
+            name: this.user.name,
+            occupation: this.user.occupation,
+            avatarUrl: this.user.avatarUrl
+        } 
+        : {
+            name: '',
+            occupation: '',
+            avatarUrl: ''
+        }
 
     onChangeText = (text, textInput) => {
         this.setState({ [textInput] : text })
+    }
+
+    onPressButton = () => {
+        if (!this.state.name || !this.state.occupation || !this.state.avatarUrl) return;
+
+        const user = {
+            ...this.state
+        }
+
+        this.dispatch({
+            type: 'create_user',
+            payload: user
+        })
+
+        this.props.navigation.goBack()
     }
 
     render() {
@@ -49,7 +65,7 @@ export default class UserForm extends Component {
                     value={this.state.avatarUrl} 
                     onChangeText={(text) => this.onChangeText(text, 'avatarUrl')}
                 />
-                <TouchableHighlight style={buttonStyle} >
+                <TouchableHighlight style={buttonStyle} onPress={() => this.onPressButton()}>
                     <Text style={styles.text}>Save</Text>
                 </TouchableHighlight>
             </View>
