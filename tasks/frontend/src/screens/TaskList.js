@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, SafeAreaView, StyleSheet } from 'react-nat
 
 import moment from 'moment'
 
+import Task from '../components/Task'
 import { colors, fonts } from '../styles'
 import todayImage from '../../assets/imgs/today.jpg'
 
@@ -19,7 +20,8 @@ export default class TaskList extends Component {
                     </View>
                 </ImageBackground>
                 <View style={styles.taskList}>
-                    
+                    <Task description={'Buy books'} estimateAt={new Date()} doneAt={new Date()}/>
+                    <Task description={'Read book'} estimateAt={new Date()} doneAt={null}/>
                 </View>
             </SafeAreaView>
         )
