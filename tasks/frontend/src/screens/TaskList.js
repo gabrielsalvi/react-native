@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, SafeAreaView, StyleSheet } from 'react-native'
+import { View, Text, ImageBackground, SafeAreaView, StyleSheet, FlatList } from 'react-native'
 
 import moment from 'moment'
 
@@ -8,6 +8,41 @@ import { colors, fonts } from '../styles'
 import todayImage from '../../assets/imgs/today.jpg'
 
 export default class TaskList extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            tasks: [
+                {
+                    id: 1,
+                    description: 'Buy Books',
+                    estimateAt: new Date(),
+                    doneAt: new Date()
+                },
+                {
+                    id: 2,
+                    description: 'Read book',
+                    estimateAt: new Date(),
+                    doneAt: null
+                }
+            ]
+        }
+    }
+
+    onToggleTask = (id) => {
+        const tasks = this.state.tasks.map(task => {
+            if (task.id === id) {
+                task.doneAt = task.doneAt ? null : new Date()
+            }
+            return task
+        })
+        this.setState({ tasks });
+    }
+    
+    renderTask = ({ item: task }) => {
+        return <Task {...task} onToggleTask={this.onToggleTask}/>
+    }
+
     render() {
         const today = moment().locale('en').format('ddd, MMMM D')
 
@@ -20,8 +55,11 @@ export default class TaskList extends Component {
                     </View>
                 </ImageBackground>
                 <View style={styles.taskList}>
-                    <Task description={'Buy books'} estimateAt={new Date()} doneAt={new Date()}/>
-                    <Task description={'Read book'} estimateAt={new Date()} doneAt={null}/>
+                    <FlatList
+                        keyExtractor={(task) => task.id.toString()}
+                        renderItem={this.renderTask}
+                        data={this.state.tasks}
+                    />
                 </View>
             </SafeAreaView>
         )
