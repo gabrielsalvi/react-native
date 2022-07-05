@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, SafeAreaView, StyleSheet, FlatList } from 'react-native'
+import { View, Text, ImageBackground, SafeAreaView, StyleSheet, FlatList, Platform } from 'react-native'
 
 import moment from 'moment'
 
 import Task from '../components/Task'
 import { colors, fonts } from '../styles'
 import todayImage from '../../assets/imgs/today.jpg'
+import Icon from 'react-native-vector-icons/Entypo'
 
 export default class TaskList extends Component {
     constructor(props) {
@@ -25,7 +26,8 @@ export default class TaskList extends Component {
                     estimateAt: new Date(),
                     doneAt: null
                 }
-            ]
+            ],
+            showDoneTasks: true
         }
     }
 
@@ -43,12 +45,26 @@ export default class TaskList extends Component {
         return <Task {...task} onToggleTask={this.onToggleTask}/>
     }
 
+    toggleDoneTasksVisibility = () => {
+        this.setState((state) => { 
+            return { showDoneTasks: !state.showDoneTasks }
+        })
+    }
+
     render() {
         const today = moment().locale('en').format('ddd, MMMM D')
 
         return (
             <SafeAreaView style={styles.container}>
                 <ImageBackground source={todayImage} style={styles.background}>
+                    <View style={styles.iconContainer}>
+                        <Icon 
+                            name={this.state.showDoneTasks ? 'eye' : 'eye-with-line'} 
+                            size={25} 
+                            color={colors.secondary}
+                            onPress={this.toggleDoneTasksVisibility}
+                        />
+                    </View>
                     <View style={styles.titleBar}>
                         <Text style={styles.title}>Today</Text>
                         <Text style={styles.subtitle}>{today}</Text>
@@ -58,7 +74,10 @@ export default class TaskList extends Component {
                     <FlatList
                         keyExtractor={(task) => task.id.toString()}
                         renderItem={this.renderTask}
-                        data={this.state.tasks}
+                        data={this.state.showDoneTasks ?
+                            this.state.tasks :
+                            this.state.tasks.filter(task => !task.doneAt)
+                        }
                     />
                 </View>
             </SafeAreaView>
@@ -93,5 +112,10 @@ const styles = StyleSheet.create({
         color: colors.secondary,
         marginLeft: 20,
         marginBottom: 15
+    },
+    iconContainer: {
+        alignItems: 'flex-end',
+        marginRight: 20,
+        marginTop:  Platform.OS === 'ios' ? 45 : 15
     }
 })
