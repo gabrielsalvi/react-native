@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { View, Text, ImageBackground, SafeAreaView, StyleSheet, FlatList, Platform } from 'react-native'
+import Icon from 'react-native-vector-icons/Entypo'
 
 import moment from 'moment'
 
-import Task from '../components/Task'
 import { colors, fonts } from '../styles'
 import todayImage from '../../assets/imgs/today.jpg'
-import Icon from 'react-native-vector-icons/Entypo'
+import Task from '../components/Task'
+import AddTask from './AddTask'
 
 export default class TaskList extends Component {
     constructor(props) {
@@ -27,7 +28,8 @@ export default class TaskList extends Component {
                     doneAt: null
                 }
             ],
-            showDoneTasks: true
+            showDoneTasks: true,
+            showAddTaskModal: true
         }
     }
 
@@ -56,6 +58,10 @@ export default class TaskList extends Component {
 
         return (
             <SafeAreaView style={styles.container}>
+                <AddTask 
+                    isVisible={this.state.showAddTaskModal}
+                    onCancel={() => this.setState({ showAddTaskModal: false })}
+                />
                 <ImageBackground source={todayImage} style={styles.background}>
                     <View style={styles.iconContainer}>
                         <Icon 
