@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, SafeAreaView, StyleSheet, FlatList, Platform } from 'react-native'
+import { View, Text, ImageBackground, SafeAreaView, StyleSheet, FlatList, Platform, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
 
 import moment from 'moment'
@@ -29,7 +29,7 @@ export default class TaskList extends Component {
                 }
             ],
             showDoneTasks: true,
-            showAddTaskModal: true
+            showAddTaskModal: false
         }
     }
 
@@ -48,8 +48,14 @@ export default class TaskList extends Component {
     }
 
     toggleDoneTasksVisibility = () => {
-        this.setState((state) => { 
+        this.setState(state => { 
             return { showDoneTasks: !state.showDoneTasks }
+        })
+    }
+
+    toggleModalVisibility = () => {
+        this.setState(state => { 
+            return { showAddTaskModal: !state.showAddTaskModal }
         })
     }
 
@@ -60,7 +66,7 @@ export default class TaskList extends Component {
             <SafeAreaView style={styles.container}>
                 <AddTask 
                     isVisible={this.state.showAddTaskModal}
-                    onCancel={() => this.setState({ showAddTaskModal: false })}
+                    onCancel={this.toggleModalVisibility}
                 />
                 <ImageBackground source={todayImage} style={styles.background}>
                     <View style={styles.iconContainer}>
@@ -86,6 +92,13 @@ export default class TaskList extends Component {
                         }
                     />
                 </View>
+                <TouchableOpacity 
+                    style={styles.button} 
+                    activeOpacity={0.7}
+                    onPress={this.toggleModalVisibility}
+                >
+                    <Icon name='plus' size={20} color={colors.secondary} />
+                </TouchableOpacity>
             </SafeAreaView>
         )
     }
@@ -123,5 +136,16 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginRight: 20,
         marginTop:  Platform.OS === 'ios' ? 45 : 15
+    }, 
+    button: {
+        position: 'absolute',
+        right: 30,
+        bottom: 30,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: colors.today,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 })

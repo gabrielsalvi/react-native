@@ -38,10 +38,17 @@ export default class AddTask extends Component {
                         />
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity 
+                            style={styles.button}
+                            activeOpacity={0.7}
+                        >
                             <Text style={styles.buttonText}>Save</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={this.props.onCancel}>
+                        <TouchableOpacity 
+                            style={styles.button} 
+                            activeOpacity={0.7}
+                            onPress={this.props.onCancel}
+                        >
                             <Text style={styles.buttonText}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
