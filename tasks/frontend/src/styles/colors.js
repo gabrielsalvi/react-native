@@ -6,6 +6,7 @@ const colors = {
     taskBorder: '#AAA',
     checkboxSelected: '#4D7031',
     checkboxBorder: '#555',
+    inputBorder: '#E3E3E3'
 }
 
 export default colors

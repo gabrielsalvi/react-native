@@ -2,8 +2,20 @@ import React, { Component } from 'react'
 import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { colors, fonts } from '../styles'
 
-export default class TaskList extends Component {
+const initialState = { 
+    description: ''
+}
 
+export default class AddTask extends Component {
+    
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            ...initialState
+        }
+    }
+    
     render() {
         return (
             <Modal 
@@ -16,23 +28,26 @@ export default class TaskList extends Component {
                     <View style={styles.overlay}></View>
                 </TouchableWithoutFeedback>
                 <View style={styles.container}>
-                    <View style={styles.inputsContainer}>
+                    <View>
                         <Text style={styles.header}>New Task</Text>
-                        <TextInput style={styles.inputs}></TextInput>
+                        <TextInput 
+                            style={styles.input}
+                            placeholder={'Description'}
+                            value={this.state.description}
+                            onChangeText={text => this.setState({ description: text})}
+                        />
                     </View>
                     <View style={styles.buttonsContainer}>
                         <TouchableOpacity style={styles.button}>
                             <Text style={styles.buttonText}>Save</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={this.props.onCancel}>
                             <Text style={styles.buttonText}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.onCancel}>
-                    <View style={styles.overlay}>
-                        
-                    </View>
+                    <View style={styles.overlay}></View>
                 </TouchableWithoutFeedback>
             </Modal>
         )
@@ -45,7 +60,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.7)'
     },
     container: {
-        flex: 2,
         backgroundColor: colors.secondary
     },
     header: {
@@ -56,18 +70,25 @@ const styles = StyleSheet.create({
         backgroundColor: colors.today,
         color: colors.secondary
     },
-    inputsContainer: {
-        flex: 3,
+    input: {
+        fontFamily: fonts.mainFont,
+        fontSize: fonts.subtitleSize,
+        width: '90%',
+        height: 40,
+        margin: 15,
+        backgroundColor: colors.secondary,
+        borderWidth: 1,
+        borderColor: colors.inputBorder,
+        borderRadius: 6
     },
     buttonsContainer: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'flex-end'
     },
     button: {
         width: 120,
-        height: 60,
+        height: 40,
         backgroundColor: colors.today,
         justifyContent: 'center',
         alignItems: 'center',
@@ -76,6 +97,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: colors.secondary,
+        fontFamily: fonts.mainFont,
+        fontSize: fonts.buttonTextSize
     },
 
 })
