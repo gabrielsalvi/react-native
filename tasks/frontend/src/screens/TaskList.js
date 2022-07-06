@@ -1,5 +1,16 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, SafeAreaView, StyleSheet, FlatList, Platform, TouchableOpacity } from 'react-native'
+import { 
+    Alert,
+    FlatList, 
+    ImageBackground,
+    Platform, 
+    SafeAreaView, 
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native'
+
 import Icon from 'react-native-vector-icons/Entypo'
 
 import moment from 'moment'
@@ -31,6 +42,16 @@ export default class TaskList extends Component {
             showDoneTasks: true,
             showAddTaskModal: false
         }
+    }
+
+    addTask = (task) => {
+        if (!task || !task.description || !task.description.trim()) {
+            Alert.alert('Invalid Data', 'You must provide a valid description to add a new task!')    
+            return;
+        }
+
+        const tasks = [...this.state.tasks, task]
+        this.setState({ tasks, showAddTaskModal: false })
     }
 
     onToggleTask = (id) => {
@@ -67,6 +88,7 @@ export default class TaskList extends Component {
                 <AddTask 
                     isVisible={this.state.showAddTaskModal}
                     onCancel={this.toggleModalVisibility}
+                    onSave={this.addTask}
                 />
                 <ImageBackground source={todayImage} style={styles.background}>
                     <View style={styles.iconContainer}>
