@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native'
 import params from './src/params'
 import MineField from './src/components/MineField'
 import Header from './src/components/Header'
-import LevelSelection from './src/screens/LevelSelection'
+import LevelSelection from './src/components/LevelSelection'
 
 import { 
     createMinedBoard,
