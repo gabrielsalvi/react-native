@@ -1,9 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
-import { Swipeable } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { colors, fonts } from '../styles'
+
 import moment from 'moment'
+
+import { colors, fonts } from '../styles'
 
 export default props => {
     const isDoneStyle  = props.doneAt != null 
@@ -14,29 +16,33 @@ export default props => {
 
     const rightActionContent = () => {
         return (
-            <TouchableOpacity style={styles.right}>
+            <TouchableOpacity 
+                style={styles.right} 
+                activeOpacity={0.7}
+            >
                 <Icon name='trash' size={30} color={colors.secondary} />
             </TouchableOpacity>
         )
     }
     
     return (
-        <Swipeable renderRightActions={rightActionContent}>
-            <View style={styles.container}>
-                <TouchableWithoutFeedback  onPress={() => props.onToggleTask(props.id)}>
-                    <View style={styles.checkContainer}>
-                        {getCheckView(props.doneAt)}
+        <GestureHandlerRootView>
+            <Swipeable renderRightActions={rightActionContent}>
+                <View style={styles.container}>
+                    <TouchableWithoutFeedback  onPress={() => props.onToggleTask(props.id)}>
+                        <View style={styles.checkContainer}>
+                            {getCheckView(props.doneAt)}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <View>
+                        <Text style={[styles.description, isDoneStyle]}>{props.description}</Text>
+                        <Text style={styles.date}>{`${formattedDate}`}</Text>    
                     </View>
-                </TouchableWithoutFeedback>
-                <View>
-                    <Text style={[styles.description, isDoneStyle]}>{props.description}</Text>
-                    <Text style={styles.date}>{`${formattedDate}`}</Text>    
                 </View>
-            </View>
-        </Swipeable>
+            </Swipeable>
+        </GestureHandlerRootView>
     )
 }
-
 
 const getCheckView = (doneAt) => {
     return doneAt 
