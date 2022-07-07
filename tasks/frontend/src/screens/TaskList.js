@@ -11,6 +11,7 @@ import {
     View
 } from 'react-native'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-vector-icons/Entypo'
 
 import moment from 'moment'
@@ -20,28 +21,26 @@ import todayImage from '../../assets/imgs/today.jpg'
 import Task from '../components/Task'
 import AddTask from './AddTask'
 
+const initialState = {
+    tasks: [],
+    visibleTasks: [],
+    showDoneTasks: true,
+    showAddTaskModal: false
+}
+
 export default class TaskList extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            tasks: [
-                {
-                    id: 1,
-                    description: 'Buy Books',
-                    estimateAt: new Date(),
-                    doneAt: new Date()
-                },
-                {
-                    id: 2,
-                    description: 'Read book',
-                    estimateAt: new Date(),
-                    doneAt: null
-                }
-            ],
-            showDoneTasks: true,
-            showAddTaskModal: false
+            ...initialState
         }
+    }
+
+    componentDidMount = async () => {
+        const strState = await AsyncStorage.getItem('state')
+        const state = JSON.parse(strState) || initialState
+        this.setState(state, this.filterTasks)
     }
 
     addTask = (task) => {
@@ -51,7 +50,7 @@ export default class TaskList extends Component {
         }
 
         const tasks = [...this.state.tasks, task]
-        this.setState({ tasks, showAddTaskModal: false })
+        this.setState({ tasks, showAddTaskModal: false }, this.filterTasks)
     }
 
     onToggleTask = (id) => {
@@ -61,7 +60,7 @@ export default class TaskList extends Component {
             }
             return task
         })
-        this.setState({ tasks });
+        this.setState({ tasks }, this.filterTasks);
     }
     
     renderTask = ({ item: task }) => {
@@ -69,9 +68,7 @@ export default class TaskList extends Component {
     }
 
     toggleDoneTasksVisibility = () => {
-        this.setState(state => { 
-            return { showDoneTasks: !state.showDoneTasks }
-        })
+        this.setState({ showDoneTasks: !this.state.showDoneTasks }, this.filterTasks)
     }
 
     toggleModalVisibility = () => {
@@ -82,7 +79,19 @@ export default class TaskList extends Component {
 
     deleteTask = id => {
         const tasks = this.state.tasks.filter(task => task.id !== id)
-        this.setState({ tasks })
+        this.setState({ tasks }, this.filterTasks)
+    }
+
+    filterTasks = () => {
+        let visibleTasks = null
+        if(this.state.showDoneTasks){
+            visibleTasks = [...this.state.tasks]
+        }else{
+            visibleTasks = this.state.tasks.filter(task => task.doneAt === null)
+        }
+
+        this.setState({ visibleTasks })
+        AsyncStorage.setItem('state', JSON.stringify(this.state))
     }
 
     render() {
@@ -113,10 +122,7 @@ export default class TaskList extends Component {
                     <FlatList
                         keyExtractor={(task) => task.id.toString()}
                         renderItem={this.renderTask}
-                        data={this.state.showDoneTasks ?
-                            this.state.tasks :
-                            this.state.tasks.filter(task => !task.doneAt)
-                        }
+                        data={this.state.visibleTasks}
                     />
                 </View>
                 <TouchableOpacity 
