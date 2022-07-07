@@ -14,20 +14,44 @@ export default props => {
     const date = props.doneAt ? props.doneAt : props.estimateAt
     const formattedDate = moment(date).format('ddd, D MMMM')
 
-    const rightActionContent = () => {
+    const swipeRight = () => {
         return (
             <TouchableOpacity 
                 style={styles.right} 
                 activeOpacity={0.7}
+                onPress={() => props.onDelete && props.onDelete(props.id)}
             >
-                <Icon name='trash' size={30} color={colors.secondary} />
+                <Icon name='trash' size={30} color={colors.secondary} style={styles.deleteIcon}/>
             </TouchableOpacity>
         )
+    }
+
+    const swipeLeft = () => {
+        return (
+            <View 
+                style={styles.left} 
+                activeOpacity={0.7}
+                onPress={() => props.onDelete && props.onDelete(props.id)}
+            >
+                <Icon name='trash' size={20} color={colors.secondary} style={styles.deleteIcon}/>
+                <Text style={styles.deleteText}>Delete</Text>
+            </View>
+        )
+    }
+
+    const onSwipeableOpen = direction => {
+        if (direction === 'left') {
+            props.onDelete && props.onDelete(props.id)
+        }
     }
     
     return (
         <GestureHandlerRootView>
-            <Swipeable renderRightActions={rightActionContent}>
+            <Swipeable 
+                renderRightActions={swipeRight} 
+                renderLeftActions={swipeLeft}
+                onSwipeableOpen={direction => onSwipeableOpen(direction)}
+            >
                 <View style={styles.container}>
                     <TouchableWithoutFeedback  onPress={() => props.onToggleTask(props.id)}>
                         <View style={styles.checkContainer}>
@@ -59,6 +83,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         alignItems: 'center',
         paddingVertical: 10,
+        backgroundColor: colors.secondary
     },
     checkContainer: {
         width: '20%',
@@ -97,5 +122,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
         paddingHorizontal: 20
+    },
+    left: {
+        flex: 1,
+        backgroundColor: 'red',
+        flexDirection:'row',
+        alignItems: 'center',
+    },
+    deleteText: {
+        fontFamily: fonts.mainFont,
+        fontSize: fonts.subtitleSize,
+        color: colors.secondary,
+        margin: 10
+    },
+    deleteIcon: {
+        marginLeft: 10
     }
 })

@@ -65,7 +65,7 @@ export default class TaskList extends Component {
     }
     
     renderTask = ({ item: task }) => {
-        return <Task {...task} onToggleTask={this.onToggleTask}/>
+        return <Task {...task} onToggleTask={this.onToggleTask} onDelete={this.deleteTask}/>
     }
 
     toggleDoneTasksVisibility = () => {
@@ -78,6 +78,11 @@ export default class TaskList extends Component {
         this.setState(state => { 
             return { showAddTaskModal: !state.showAddTaskModal }
         })
+    }
+
+    deleteTask = id => {
+        const tasks = this.state.tasks.filter(task => task.id !== id)
+        this.setState({ tasks })
     }
 
     render() {
