@@ -21,6 +21,13 @@ module.exports = app => {
                 .catch(error => res.status(400).json(error))
         })
     }
+    
+    const list = (req, res) => {
+        app.db('users')
+            .select()
+            .then(result => res.status(200).send(result))
+            .catch(error => res.status(400).json(error))
+    }
 
-    return { save }
+    return { list, save }
 }
