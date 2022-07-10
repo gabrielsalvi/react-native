@@ -16,11 +16,11 @@ module.exports = app => {
         if (user) {
             bcrypt.compare(req.body.password, user.password, (error, matched) => {
                 if (error || !matched) {
-                    return res.status(401).send()
+                    return res.status(401).send('You must provide the right password!')
                 }
 
                 const payload = { id: user.id }
-
+                                
                 res.json({
                     name: user.name,
                     email: user.email,
