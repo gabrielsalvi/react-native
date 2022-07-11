@@ -59,7 +59,7 @@ export default class Auth extends Component {
                 name: this.state.name,
                 email: this.state.email,
                 password: this.state.password,
-                confirmPassword: this.state.confirmPassword,
+                passwordConfirmation: this.state.passwordConfirmation,
             })
 
             showSuccess('User Registered!')
@@ -75,8 +75,8 @@ export default class Auth extends Component {
         validations.push(this.state.password && this.state.password.length >= 6)
 
         if (this.state.newStage) {
-            validations.push(this.state.name && this.state.name.trim().length() >= 3)
-            validations.push(this.state.password === this.state.confirmPassword)
+            validations.push(this.state.name && this.state.name.trim().length >= 3)
+            validations.push(this.state.password === this.state.passwordConfirmation)
         }
 
         const validData = validations.reduce((total, current) => total && current)
