@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import {
-    Alert,
     ImageBackground,
-    Platform,
     StyleSheet, 
     Text,
-    TextInput,
     TouchableOpacity,
     View 
 } from 'react-native'
+
+import AuthInput from '../components/AuthInput'
 
 import { colors, fonts } from '../styles'
 import backgroundImage from '../../assets/imgs/login.jpg'
@@ -56,20 +55,23 @@ export default class Auth extends Component {
                         {this.state.newStage ? 'Join Tasks today' : 'Sign in to Tasks'}
                     </Text>
                     {this.state.newStage && 
-                        <TextInput 
+                        <AuthInput 
+                            icon='user'
                             style={styles.input}
                             placeholder='Name' 
                             value={this.state.name}
                             onChangeText={name => this.setState({ name })}
                         />
                     }
-                    <TextInput 
+                    <AuthInput 
+                        icon='at'
                         style={styles.input}
                         placeholder='Email' 
                         value={this.state.email}
                         onChangeText={email => this.setState({ email })}
                     />
-                   <TextInput 
+                   <AuthInput
+                        icon='lock' 
                         style={styles.input}
                         placeholder='Password'
                         secureTextEntry={true}
@@ -77,7 +79,8 @@ export default class Auth extends Component {
                         onChangeText={password => this.setState({ password })}
                     />
                     {this.state.newStage && 
-                        <TextInput 
+                        <AuthInput
+                            icon='asterisk' 
                             style={styles.input}
                             placeholder='Password Confirmation'
                             secureTextEntry={true}
@@ -135,14 +138,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 10,
         backgroundColor: '#FFF',
-        padding: Platform.OS === 'ios' ? 15 : 10
     },
     button: {
         backgroundColor: '#080',
         marginTop: 10,
         padding: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        borderRadius: 7
     },
     buttonText: {
         fontFamily: fonts.mainFont,
