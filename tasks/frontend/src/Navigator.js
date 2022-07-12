@@ -5,11 +5,31 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 
 import Auth from './screens/Auth'
 import TaskList from './screens/TaskList'
+import Menu from './screens/Menu'
+
+import { fonts } from './styles'
+
+const menuConfig = {
+    drawerLabelStyle: {
+        fontFamily: fonts.mainFont,
+        fontWeight: 'normal',
+        fontSize: 20,
+    },
+    drawerActiveTintColor: '#080',
+    headerShown: false
+}
 
 const Drawer = createDrawerNavigator()
-const DrawerNavigator = () => {
+const DrawerNavigator = props => {
+    const { email, name } = props.route.params
     return (
-        <Drawer.Navigator initialRouteName='Today' screenOptions={{ headerShown: false}}>
+        <Drawer.Navigator 
+            initialRouteName='Today'
+            screenOptions={menuConfig}
+            drawerContent={props => {
+                return <Menu {...props} email={email} name={name} />
+            }}
+        >
             <Drawer.Screen name='Today'>
                 {props => <TaskList title='Today' daysAhead={0} {...props} />} 
             </Drawer.Screen>
