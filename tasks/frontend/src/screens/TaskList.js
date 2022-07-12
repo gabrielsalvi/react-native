@@ -88,7 +88,6 @@ export default class TaskList extends Component {
         } catch (error) {
             showError(error)
         }
-        this.setState({ tasks }, this.filterTasks);
     }
     
     renderTask = ({ item: task }) => {
