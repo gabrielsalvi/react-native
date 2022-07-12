@@ -20,7 +20,8 @@ import Task from '../components/Task'
 import AddTask from './AddTask'
 
 import { colors, fonts } from '../styles'
-import todayImage from '../../assets/imgs/today.jpg'
+import images from '../../assets/imgs'
+
 import { server, showError, showSuccess } from '../common'
 
 const initialState = {
@@ -51,7 +52,10 @@ export default class TaskList extends Component {
 
     loadTasks = async () => {
         try {
-            const maxDate = moment().format('YYYY-MM-DD 23:59:59')
+            const maxDate = moment()
+                .add({ days: this.props.daysAhead })
+                .format('YYYY-MM-DD 23:59:59')
+
             const res = await axios.get(`${server}/tasks?date=${maxDate}`)
             this.setState({ tasks: res.data }, this.filterTasks)
         } catch(error) {
@@ -75,7 +79,6 @@ export default class TaskList extends Component {
         } catch (error) {
             showError(error)
         }
-
     }
 
     onToggleTask = async id => {
@@ -125,6 +128,36 @@ export default class TaskList extends Component {
         }))
     }
 
+    getBackgroundImage = () => {
+        switch (this.props.daysAhead) {
+            case 0:
+                return images.today
+            case 1:
+                return images.tomorrow
+            case 7:
+                return images.week
+            case 30:
+                return images.month
+            default:
+                return images.today
+        }
+    }
+
+    getButtonColor = () => {
+        switch (this.props.daysAhead) {
+            case 0:
+                return colors.today
+            case 1:
+                return colors.tomorrow
+            case 7:
+                return colors.week
+            case 30:
+                return colors.month
+            default:
+                return colors.today
+        }
+    }
+
     render() {
         const today = moment().locale('en').format('ddd, MMMM D')
 
@@ -135,8 +168,14 @@ export default class TaskList extends Component {
                     onCancel={this.toggleModalVisibility}
                     onSave={this.addTask}
                 />
-                <ImageBackground source={todayImage} style={styles.background}>
+                <ImageBackground source={this.getBackgroundImage()} style={styles.background}>
                     <View style={styles.iconContainer}>
+                        <Icon 
+                            name='menu' 
+                            size={25} 
+                            color={colors.secondary}
+                            onPress={() => this.props.navigation.openDrawer()}
+                        />
                         <Icon 
                             name={this.state.showDoneTasks ? 'eye' : 'eye-with-line'} 
                             size={25} 
@@ -145,7 +184,7 @@ export default class TaskList extends Component {
                         />
                     </View>
                     <View style={styles.titleBar}>
-                        <Text style={styles.title}>Today</Text>
+                        <Text style={styles.title}>{this.props.title}</Text>
                         <Text style={styles.subtitle}>{today}</Text>
                     </View>
                 </ImageBackground>
@@ -157,7 +196,7 @@ export default class TaskList extends Component {
                     />
                 </View>
                 <TouchableOpacity 
-                    style={styles.button} 
+                    style={[styles.button, { backgroundColor: this.getButtonColor() }]}
                     activeOpacity={0.7}
                     onPress={this.toggleModalVisibility}
                 >
@@ -197,8 +236,9 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     iconContainer: {
-        alignItems: 'flex-end',
-        marginRight: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 20,
         marginTop:  Platform.OS === 'ios' ? 45 : 15
     }, 
     button: {
@@ -208,7 +248,6 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
-        backgroundColor: colors.today,
         justifyContent: 'center',
         alignItems: 'center',
     }
