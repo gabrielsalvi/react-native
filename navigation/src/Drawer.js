@@ -9,13 +9,13 @@ const Drawer = createDrawerNavigator()
 
 export default props => (
     <NavigationContainer>
-        <Drawer.Navigator useLegacyImplementation
-      screenOptions={{
-        draweStyle: {
-          backgroundColor: '#c6cbef',
-          width: 240,
-        },
-      }}>
+        <Drawer.Navigator
+        screenOptions={{
+          drawerStyle: {
+            backgroundColor: '#c6cbef',
+            width: 240,
+          },
+        }}>
             <Drawer.Screen name='ScreenA' component={ScreenA} />
             <Drawer.Screen name='ScreenB' component={ScreenB} />
             <Drawer.Screen name='ScreenC' component={ScreenC} />
