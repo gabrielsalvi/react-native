@@ -5,7 +5,11 @@ const server = Platform.OS === 'ios'
     : 'http://10.0.2.2:3000'
 
 const showError = error => {
-    Alert.alert('Oops... There was a problem!', `Message: ${error}`)
+    if (error.response && error.response.data) {
+        Alert.alert('Oops... There was a problem!', error.response.data)
+    } else {
+        Alert.alert('Oops... There was a problem!', error)
+    }
 }
 
 const showSuccess = message => {
