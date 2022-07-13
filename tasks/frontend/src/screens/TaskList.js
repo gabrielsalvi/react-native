@@ -45,7 +45,7 @@ export default class TaskList extends Component {
         const savedState = JSON.parse(strState) || initialState
         this.setState({
             showDoneTasks: savedState.showDoneTasks
-        }, this.filterTasks)
+        })
 
         this.loadTasks()
     }
