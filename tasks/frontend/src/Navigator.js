@@ -17,7 +17,8 @@ const menuConfig = {
         fontSize: 20,
     },
     drawerActiveTintColor: '#080',
-    headerShown: false
+    headerShown: false,
+    unmountOnBlur: true
 }
 
 const Drawer = createDrawerNavigator()
