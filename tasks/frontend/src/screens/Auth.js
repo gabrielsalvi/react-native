@@ -7,6 +7,7 @@ import {
     View 
 } from 'react-native'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 import AuthInput from '../components/AuthInput'
@@ -45,9 +46,10 @@ export default class Auth extends Component {
                 email: this.state.email,
                 password: this.state.password,
             })
-
+            
+            AsyncStorage.setItem('userData', JSON.stringify(res.data))
             axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`
-            this.props.navigation.navigate('TaskList')
+            this.props.navigation.navigate('TaskList', res.data)
         } catch (error) {
             showError(error)
         }
