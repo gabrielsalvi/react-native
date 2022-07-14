@@ -22,29 +22,20 @@ import AddTask from './AddTask'
 import { colors, fonts } from '../styles'
 import images from '../../assets/imgs'
 
-import { server, showError, showSuccess } from '../common'
-
-const initialState = {
-    tasks: [],
-    visibleTasks: [],
-    showDoneTasks: true,
-    showAddTaskModal: false
-}
+import { server, showError } from '../common'
 
 export default class TaskList extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            ...initialState
-        }
     }
 
     componentDidMount = async () => {
         const strState = await AsyncStorage.getItem('state')
-        const savedState = JSON.parse(strState) || initialState
-        this.setState({
-            showDoneTasks: savedState.showDoneTasks
+        const savedState = JSON.parse(strState) || this.props.global.state
+
+        this.props.global.dispatch({
+            type: 'setDoneTasksVisibility',
+            payload: savedState.showDoneTasks
         })
 
         this.loadTasks()
@@ -57,7 +48,14 @@ export default class TaskList extends Component {
                 .format('YYYY-MM-DD 23:59:59')
 
             const res = await axios.get(`${server}/tasks?date=${maxDate}`)
-            this.setState({ tasks: res.data }, this.filterTasks)
+
+            this.props.global.dispatch({
+                type: 'loadTasks',
+                payload: res.data
+            })
+            
+            this.filterTasks()
+        
         } catch(error) {
             showError(error)
         }
@@ -75,7 +73,13 @@ export default class TaskList extends Component {
                 estimateAt: task.estimateAt
             })
 
-            this.setState({ showAddTaskModal: false }, this.loadTasks)
+            this.props.global.dispatch({
+                type: 'setModalVisibility',
+                payload: false
+            })
+
+            this.loadTasks()
+
         } catch (error) {
             showError(error)
         }
@@ -95,12 +99,18 @@ export default class TaskList extends Component {
     }
 
     toggleDoneTasksVisibility = () => {
-        this.setState({ showDoneTasks: !this.state.showDoneTasks }, this.filterTasks)
+        this.props.global.dispatch({
+            type: 'setDoneTasksVisibility',
+            payload: !this.props.global.state.showDoneTasks
+        })
+
+        this.filterTasks()
     }
 
     toggleModalVisibility = () => {
-        this.setState(state => { 
-            return { showAddTaskModal: !state.showAddTaskModal }
+        this.props.global.dispatch({
+            type: 'setModalVisibility',
+            payload: !this.props.global.state.showAddTaskModal
         })
     }
 
@@ -114,16 +124,17 @@ export default class TaskList extends Component {
     }
 
     filterTasks = () => {
-        let visibleTasks = null
-        if(this.state.showDoneTasks){
-            visibleTasks = [...this.state.tasks]
-        }else{
-            visibleTasks = this.state.tasks.filter(task => task.doneAt === null)
-        }
+        const visibleTasks = this.props.global.state.showDoneTasks
+            ? [...this.props.global.state.tasks]
+            : this.props.global.state.tasks.filter(task => task.doneAt === null);
 
-        this.setState({ visibleTasks })
+        this.props.global.dispatch({
+            type: 'setVisibleTasks',
+            payload: visibleTasks
+        })
+
         AsyncStorage.setItem('state', JSON.stringify({
-            showDoneTasks: this.state.showDoneTasks
+            showDoneTasks: this.props.global.state.showDoneTasks
         }))
     }
 
@@ -163,7 +174,7 @@ export default class TaskList extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <AddTask 
-                    isVisible={this.state.showAddTaskModal}
+                    isVisible={this.props.global.state.showAddTaskModal}
                     onCancel={this.toggleModalVisibility}
                     onSave={this.addTask}
                 />
@@ -176,7 +187,7 @@ export default class TaskList extends Component {
                             onPress={() => this.props.navigation.openDrawer()}
                         />
                         <Icon 
-                            name={this.state.showDoneTasks ? 'eye' : 'eye-with-line'} 
+                            name={this.props.global.state.showDoneTasks ? 'eye' : 'eye-with-line'}
                             size={25} 
                             color={colors.secondary}
                             onPress={this.toggleDoneTasksVisibility}
@@ -191,7 +202,7 @@ export default class TaskList extends Component {
                     <FlatList
                         keyExtractor={(task) => task.id.toString()}
                         renderItem={this.renderTask}
-                        data={this.state.visibleTasks}
+                        data={this.props.global.state.visibleTasks}
                     />
                 </View>
                 <TouchableOpacity 
