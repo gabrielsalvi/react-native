@@ -10,14 +10,18 @@ const styles = StyleSheet.create({
         width: size,
         height: size,
         borderRadius: size / 2,
-        backgroundColor: "#2A2A2A",
+        backgroundColor: "#2F2F2F",
+        borderWidth: 1,
+        borderColor: "#2A2A2A",
         margin: 5
     },
     operationButton: {
-        backgroundColor: "#FF9203",
+        backgroundColor: "#FD550D",
+        borderWidth: 0,
     },
     clearButton: {
-        backgroundColor: "#FF0352"
+        backgroundColor: "#FF0352",
+        borderWidth: 0,
     },
     symbol: {
         fontFamily: "Arial",
