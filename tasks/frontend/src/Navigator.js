@@ -9,7 +9,7 @@ import Menu from './screens/Menu'
 import TaskList from './screens/TaskList'
 
 import { fonts } from './styles'
-import reducer from './reducer'
+import reducer from './reducer/reducer.js'
 
 const menuConfig = {
     drawerLabelStyle: {
@@ -25,17 +25,14 @@ const initialState = {
     tasks: [],
     visibleTasks: [],
     showDoneTasks: true,
-    showAddTaskModal: false
+    showModalAddTask: false
 }
 
 const Drawer = createDrawerNavigator()
 const DrawerNavigator = props => {
     const { email, name } = props.route.params
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const globalState = {
-        state,
-        dispatch
-    }
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const globalState = { state, dispatch }
 
     return (
         <Drawer.Navigator 

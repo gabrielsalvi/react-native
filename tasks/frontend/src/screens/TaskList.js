@@ -27,18 +27,15 @@ import { server, showError } from '../common'
 export default class TaskList extends Component {
     constructor(props) {
         super(props)
-    }
 
-    componentDidMount = async () => {
-        const strState = await AsyncStorage.getItem('state')
-        const savedState = JSON.parse(strState) || this.props.global.state
-
-        this.props.global.dispatch({
-            type: 'setDoneTasksVisibility',
-            payload: savedState.showDoneTasks
+        AsyncStorage.getItem('state').then(strState => {
+            const savedState = JSON.parse(strState) || this.props.global.state;
+            this.props.global.dispatch({
+                type: 'setDoneTasksVisibility',
+                payload: savedState.showDoneTasks
+            })
+            this.loadTasks()
         })
-
-        this.loadTasks()
     }
 
     loadTasks = async () => {
@@ -99,18 +96,21 @@ export default class TaskList extends Component {
     }
 
     toggleDoneTasksVisibility = () => {
+
+        console.log('toggleDoneTasksVisibility: ' + !this.props.global.state.showDoneTasks)
+
         this.props.global.dispatch({
             type: 'setDoneTasksVisibility',
             payload: !this.props.global.state.showDoneTasks
         })
 
-        this.filterTasks()
+        this.loadTasks()
     }
 
     toggleModalVisibility = () => {
         this.props.global.dispatch({
             type: 'setModalVisibility',
-            payload: !this.props.global.state.showAddTaskModal
+            payload: !this.props.global.state.showModalAddTask
         })
     }
 
@@ -174,7 +174,7 @@ export default class TaskList extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <AddTask 
-                    isVisible={this.props.global.state.showAddTaskModal}
+                    isVisible={this.props.global.state.showModalAddTask}
                     onCancel={this.toggleModalVisibility}
                     onSave={this.addTask}
                 />
