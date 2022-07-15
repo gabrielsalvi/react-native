@@ -9,7 +9,7 @@ export default {
     setModalVisibility: (state, action) => {
         return {
             ...state,
-            showAddTaskModal: action.payload
+            showModalAddTask: action.payload
         }
     },
 
