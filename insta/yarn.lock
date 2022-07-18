@@ -6083,6 +6083,11 @@
   dependencies:
     "gravatar-api" "^1.5.0"
 
+"react-native-image-picker@^4.8.4":
+  "integrity" "sha512-Mjh2j/sddyolb16EpmprWzbtyeFvW8Xgzr/8WNi9d6bR2FC/kL78cY/a+7Yzujg5ZDtT1MWys+eWw/qtfwgGiw=="
+  "resolved" "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-4.8.4.tgz"
+  "version" "4.8.4"
+
 "react-native-reanimated@^2.9.1":
   "integrity" "sha512-309SIhDBwY4F1n6e5Mr5D1uPZm2ESIcmZsGXHUu8hpKX4oIOlZj2MilTk+kHhi05LjChoJkcpfkstotCJmPRPg=="
   "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.9.1.tgz"
