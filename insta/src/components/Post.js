@@ -8,14 +8,16 @@ import {
 
 import Author from './Author'
 import Comments from './Comments'
+import AddComment from './AddComment'
 
 export default class Post extends Component {
     render() {
         return (
             <View style={styles.container}>
                 <Image source={this.props.image} style={styles.image} />
-                <Author email='fulano@gmail.com' nickname='Fulano De Tal' />
+                <Author email={this.props.email} nickname={this.props.nickname} />
                 <Comments comments={this.props.comments} />
+                <AddComment />
             </View>
         )
     }
