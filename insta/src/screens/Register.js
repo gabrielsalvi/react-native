@@ -1,42 +1,42 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default class Login extends Component {
+export default class Register extends Component {
     constructor() {
-        super()
+        super();
         this.state = {
+            name: '',
             email: '',
             password: '',
         }
-    }
-
-    login = () => {
-
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <TextInput 
-                    placeholder='Email'
                     style={styles.input}
+                    placeholder='Name'
+                    autoFocus={true}
+                    value={this.state.name}
+                    onChangeText={name => this.setState({ name })}
+                />
+                <TextInput 
+                    style={styles.input}
+                    placeholder='Email'
                     keyboardType='email-address'
                     value={this.state.email}
                     onChangeText={email => this.setState({ email })}
-                    autoFocus={true}
                 />
                 <TextInput 
-                    placeholder='Password'
                     style={styles.input}
+                    placeholder='Password'
                     secureTextEntry={true}
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
                 />
-                <TouchableOpacity style={styles.button} onPress={this.login}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Register')}>
-                    <Text style={styles.buttonText}>Create Account</Text>
+                <TouchableOpacity onPress={() => {}} style={styles.button}>
+                    <Text style={styles.buttonText}>Save</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 30,
         padding: 10,
-        backgroundColor: '#4286F4'
+        backgroundColor: '#4286f4'
     },
     buttonText: {
         fontSize: 20,
-        color: '#FFF',
+        color: '#FFF'
     },
     input: {
         marginTop: 20,
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#EEE',
         height: 40,
         borderWidth: 1,
-        borderColor: '#333'
+        borderColor: '#333',
+        paddingLeft: 15
     }
 })
