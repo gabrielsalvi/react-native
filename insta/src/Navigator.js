@@ -36,6 +36,7 @@ export default props => {
         return {
             initialRouteName: 'Feed',
             headerShown: false,
+            tabBarShowLabel: false,
             tabBarIcon: ({ color, size }) => <Icon name={icons[route.name]} size={size} color={color} />
         }
     }
