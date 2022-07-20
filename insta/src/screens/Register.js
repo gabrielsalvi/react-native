@@ -49,22 +49,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    button: {
-        marginTop: 30,
-        padding: 10,
-        backgroundColor: '#4286f4'
-    },
-    buttonText: {
-        fontSize: 20,
-        color: '#FFF'
-    },
     input: {
         marginTop: 20,
         width: '90%',
-        backgroundColor: '#EEE',
         height: 40,
+        borderRadius: 20,
         borderWidth: 1,
         borderColor: '#333',
-        paddingLeft: 15
-    }
+        backgroundColor: '#FFF',
+        padding: 10,
+    },
+    button: {
+        width: 150,
+        height: 45,
+        borderRadius: 25,
+        marginHorizontal: 5,
+        marginTop: 30,
+        padding: 10,
+        backgroundColor: '#4286F4',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonText: {
+        fontSize: 20,
+        color: '#FFF',
+    },
 })

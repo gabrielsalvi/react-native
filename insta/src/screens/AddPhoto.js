@@ -25,7 +25,7 @@ import { addPost } from '../store/actions/post'
         }
     }
 
-    pickPhoto = async () => {
+    takePicture = async () => {
         const result = await launchCamera({
             mediaType: 'photo',
             includeBase64: true,
@@ -42,7 +42,7 @@ import { addPost } from '../store/actions/post'
         })
     }
 
-    pickImage = async () => {
+    pickPhoto = async () => {
         const result = await launchImageLibrary({
             mediaType: 'photo',
             includeBase64: true,
@@ -79,23 +79,25 @@ import { addPost } from '../store/actions/post'
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    <Text style={styles.title}>Share a image</Text>
+                    <Text style={styles.title}>Share a picture</Text>
                     <View style={styles.imageContainer}>
                         <Image style={styles.image} source={this.state.image} />
                     </View>
-                    <TouchableOpacity onPress={this.pickPhoto} style={styles.button}>
-                        <Text style={styles.buttonText}>Pick the photo</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.pickImage} style={styles.button}>
-                        <Text style={styles.buttonText}>Pick the image</Text>
-                    </TouchableOpacity>
+                    <View style={styles.buttonsContainer}>
+                        <TouchableOpacity onPress={this.takePicture} style={styles.button}>
+                            <Text style={styles.buttonText}>Camera</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.pickPhoto} style={styles.button}>
+                            <Text style={styles.buttonText}>Photos</Text>
+                        </TouchableOpacity>
+                    </View>
                     <TextInput 
                         style={styles.input}
-                        placeholder='Leave a comment bellow'
+                        placeholder='Leave a comment...'
                         onChangeText={comment => this.setState({ comment })}
                     />
                     <TouchableOpacity style={styles.button} onPress={this.save}>
-                        <Text style={styles.buttonText}>Save</Text>
+                        <Text style={styles.buttonText}>Share</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -124,16 +126,25 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').width / 2,
         resizeMode: 'center',
     },
+    buttonsContainer: {
+        flexDirection: 'row',
+    },
     button: {
+        width: 180,
         marginTop: 30,
         padding: 10,
         backgroundColor: '#4286f4',
+        marginHorizontal: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     buttonText: {
         fontSize: 20,
         color: '#FFF',
     },
     input: {
+        fontFamily: 'shelter',
+        fontSize: 20,
         marginTop: 20,
         width: '90%'
     }

@@ -37,12 +37,20 @@ class Login extends Component {
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
                 />
-                <TouchableOpacity style={styles.button} onPress={this.login}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Register')}>
-                    <Text style={styles.buttonText}>Create Account</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonsContainer}>
+                    <TouchableOpacity 
+                        style={styles.button} 
+                        onPress={this.login}
+                    >
+                        <Text style={styles.buttonText}>Login</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        style={[styles.button, {backgroundColor: 'green'}]} 
+                        onPress={() => this.props.navigation.navigate('Register')}
+                    >
+                        <Text style={styles.buttonText}>Register</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -54,10 +62,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    buttonsContainer: {
+        flexDirection: 'row'
+    },
     button: {
+        width: 150,
+        height: 45,
+        borderRadius: 25,
+        marginHorizontal: 5,
         marginTop: 30,
         padding: 10,
-        backgroundColor: '#4286F4'
+        backgroundColor: '#4286F4',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     buttonText: {
         fontSize: 20,
@@ -66,10 +83,12 @@ const styles = StyleSheet.create({
     input: {
         marginTop: 20,
         width: '90%',
-        backgroundColor: '#EEE',
         height: 40,
+        borderRadius: 20,
         borderWidth: 1,
-        borderColor: '#333'
+        borderColor: '#333',
+        backgroundColor: '#FFF',
+        padding: 10,
     }
 })
 
