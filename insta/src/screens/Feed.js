@@ -5,8 +5,8 @@ import Header from '../components/Header';
 import Post from '../components/Post';
 
 export default class Feed extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             posts: [
@@ -44,7 +44,7 @@ export default class Feed extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Header />
+                <Header {...this.props} />
                 <FlatList 
                     data={this.state.posts} 
                     keyExtractor={post => `${post.id}`}
