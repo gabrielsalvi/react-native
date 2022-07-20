@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import { login } from '../store/actions/actionCreators'
+import { login } from '../store/actions/user'
 
 class Login extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             name: 'Temp',
             email: '',

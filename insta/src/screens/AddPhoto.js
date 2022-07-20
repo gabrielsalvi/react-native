@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { 
-    Alert,
     Dimensions,
     Image,
     Platform,
@@ -11,9 +10,13 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
+
+import { connect } from 'react-redux';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
-export default class AddPhoto extends Component {
+import { addPost } from '../store/actions/post'
+
+ class AddPhoto extends Component {
     constructor() {
         super()
         this.state = {
@@ -55,8 +58,21 @@ export default class AddPhoto extends Component {
         })
     }
 
-    save = () => {
-        Alert.alert('Image Saved!', this.state.comment)
+    save = async () => {
+        this.props.onAddPost({
+            id: Math.random(),
+            nickname: this.props.name,
+            email: this.props.email,
+            image: this.state.image,
+            comments: [
+                {
+                    nickname: this.props.name,
+                    comment: this.state.comment
+                }
+            ]
+        })
+
+        this.props.navigation.navigate('Feed')
     }
 
     render() {
@@ -122,3 +138,20 @@ const styles = StyleSheet.create({
         width: '90%'
     }
 })
+
+const mapStateToProps = ({ user }) => {
+    return {
+        email: user.email,
+        name: user.name,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddPost: post => {
+            dispatch(addPost(post))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddPhoto)
