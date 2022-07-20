@@ -10,18 +10,24 @@ import Author from './Author'
 import Comments from './Comments'
 import AddComment from './AddComment'
 
-export default class Post extends Component {
+import { connect } from 'react-redux'
+
+class Post extends Component {
     constructor(props) {
         super(props)
     }
     
     render() {
+        const addComment = this.props.name 
+            ? <AddComment postId={this.props.id} />
+            : null
+
         return (
             <View style={styles.container}>
                 <Image source={this.props.image} style={styles.image} />
                 <Author email={this.props.email} nickname={this.props.nickname} />
                 <Comments comments={this.props.comments} />
-                <AddComment postId={this.props.id} />
+                {addComment}
             </View>
         )
     }
@@ -37,3 +43,11 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     }
 })
+
+const mapStateToProps = ({ user }) => {
+    return {
+        ...user
+    }
+}
+
+export default connect(mapStateToProps)(Post);

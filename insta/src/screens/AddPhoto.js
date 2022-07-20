@@ -17,8 +17,8 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { addPost } from '../store/actions/post'
 
  class AddPhoto extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             image: null,
             comment: ''

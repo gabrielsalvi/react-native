@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Feed from './screens/Feed';
@@ -16,8 +16,7 @@ const AuthStack = createNativeStackNavigator();
 
 const AuthProfile = createNativeStackNavigator();
 
-export default props => {
-
+const Navigator = props => {
     const Auth = () => (
         <AuthStack.Navigator screenOptions={{headerShown: false}}>
             <AuthStack.Screen name="Login" component={Login} />
@@ -41,13 +40,17 @@ export default props => {
         }
     }
 
+    const addPhoto = props.name
+        ? <Tab.Screen name='AddPhoto' component={AddPhoto} />
+        : null
+
     return (
         <NavigationContainer>
             <Tab.Navigator 
                 screenOptions={({ route }) => menuOptions(route)}
             >
                 <Tab.Screen name='Feed' component={Feed}  />
-                <Tab.Screen name='AddPhoto' component={AddPhoto}  />
+                {addPhoto}
                 <Tab.Screen name='Profile' component={AuthOrProfile} />
             </Tab.Navigator>
         </NavigationContainer>
@@ -59,3 +62,11 @@ const icons = {
     AddPhoto: 'camera',
     Profile: 'user'
 }
+
+const mapStateToProps = ({ user }) => {
+    return {
+        ...user
+    }
+}
+
+export default connect(mapStateToProps)(Navigator)
