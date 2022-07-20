@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Gravatar } from 'react-native-gravatar';
 import { connect } from 'react-redux';
 
-import { logout } from '../store/actions/actionCreators'
+import { logout } from '../store/actions/user'
 
 class Profile extends Component {
     logout = () => {
