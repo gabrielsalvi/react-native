@@ -26,7 +26,7 @@ export default props => {
     )
 
     const AuthOrProfile = () => (
-        <AuthProfile.Navigator>
+        <AuthProfile.Navigator initialRouteName='Auth'>
             <AuthProfile.Screen name="Home" component={Profile} />
             <AuthProfile.Screen name="Auth" component={Auth} /> 
         </AuthProfile.Navigator>
