@@ -11,6 +11,23 @@ const actions = {
                 ...action.payload
             })
         }
+    },
+    addComment: (state, action) => {
+        return {
+            ...state,
+            posts: state.posts.map(post => {
+                newPost = { ...post }
+
+                if (newPost.id === action.payload.postId) {
+                    if (newPost.comments) {
+                        newPost.comments = newPost.comments.concat(action.payload.comment)
+                    }else {
+                        newPost.comments = [action.payload.comment]
+                    }
+                }
+                return newPost;
+            })
+        }
     }
 }
 
