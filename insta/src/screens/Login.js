@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
 
-export default class Login extends Component {
+import { login } from '../store/actions/actionCreators'
+
+class Login extends Component {
     constructor() {
         super()
         this.state = {
+            name: 'Temp',
             email: '',
             password: '',
         }
     }
 
     login = () => {
-
+        this.props.onLogin({ ...this.state })
+        this.props.navigation.navigate('Home')
     }
 
     render() {
@@ -67,3 +72,11 @@ const styles = StyleSheet.create({
         borderColor: '#333'
     }
 })
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogin: user => dispatch(login(user))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Login)
