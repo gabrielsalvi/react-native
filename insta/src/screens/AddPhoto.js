@@ -14,6 +14,8 @@ import {
 import { connect } from 'react-redux';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
+import Header from '../components/Header';
+
 import { addPost } from '../store/actions/post'
 
  class AddPhoto extends Component {
@@ -77,30 +79,31 @@ import { addPost } from '../store/actions/post'
 
     render() {
         return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <Text style={styles.title}>Share a picture</Text>
-                    <View style={styles.imageContainer}>
-                        <Image style={styles.image} source={this.state.image} />
-                    </View>
-                    <View style={styles.buttonsContainer}>
-                        <TouchableOpacity onPress={this.takePicture} style={styles.button}>
-                            <Text style={styles.buttonText}>Camera</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.pickPhoto} style={styles.button}>
-                            <Text style={styles.buttonText}>Photos</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TextInput 
-                        style={styles.input}
-                        placeholder='Leave a comment...'
-                        onChangeText={comment => this.setState({ comment })}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={this.save}>
-                        <Text style={styles.buttonText}>Share</Text>
+            <>
+            <Header />
+            <View style={styles.container}>
+                <Text style={styles.title}>Share a picture</Text>
+                <View style={styles.imageContainer}>
+                    <Image style={styles.image} source={this.state.image} />
+                </View>
+                <View style={styles.buttonsContainer}>
+                    <TouchableOpacity onPress={this.takePicture} style={styles.button}>
+                        <Text style={styles.buttonText}>Camera</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.pickPhoto} style={styles.button}>
+                        <Text style={styles.buttonText}>Photos</Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
+                <TextInput 
+                    style={styles.input}
+                    placeholder='Leave a comment...'
+                    onChangeText={comment => this.setState({ comment })}
+                />
+                <TouchableOpacity style={styles.button} onPress={this.save}>
+                    <Text style={styles.buttonText}>Share</Text>
+                </TouchableOpacity>
+            </View>
+            </>
         )
     }
 }
@@ -108,18 +111,18 @@ import { addPost } from '../store/actions/post'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     title: {
         fontSize: 20,
-        marginTop: Platform.OS === 'ios' ? 30 : 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginBottom: 20
     },
     imageContainer: {
         width: '90%',
         height: Dimensions.get('window').width / 2,
         backgroundColor: '#E5E5E5',
-        marginTop: 10
     },
     image: {
         width: '100%',
