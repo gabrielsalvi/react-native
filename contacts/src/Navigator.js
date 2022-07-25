@@ -5,14 +5,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import ContactList from './screens/ContactList';
 import AddContact from './screens/AddContact';
+import { colors } from '../public/styles';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
     return (
-        <Stack.Navigator initialRouteName='ContactList' screenOptions={{headerShown: false}}>
-            <Stack.Screen name='ContactList' component={ContactList}/>
-            <Stack.Screen name='AddContact' component={AddContact}/>
+        <Stack.Navigator screenOptions={screenOptions} initialRouteName='ContactList'>
+            <Stack.Screen options={options} name='ContactList' component={ContactList}/>
+            <Stack.Screen options={options} name='AddContact' component={AddContact}/>
         </Stack.Navigator>
     )
 }
@@ -23,6 +24,25 @@ const Navigator = () => {
             <StackNavigator />
         </NavigationContainer>
     )
+}
+
+const screenOptions = {
+    headerStyle: { 
+        backgroundColor: colors.main,
+    },
+    headerTintColor: colors.secondary,
+    headerTitleAlign: 'center'
+}
+
+const screenTitle = {
+    ContactList: 'Lista de Contatos',
+    AddContact: 'Adicionar Contato'
+}
+
+const options = ({ route }) => {
+    return {
+        title: screenTitle[route.name]
+    }
 }
 
 export default Navigator
