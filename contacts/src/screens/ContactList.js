@@ -10,9 +10,7 @@ import {
 
 import Icon from 'react-native-vector-icons/Feather';
 
-import Header from '../components/Header';
 import Contact from '../components/Contact';
-
 import { colors } from '../../public/styles';
 
 const contacts = [
@@ -42,7 +40,6 @@ export default class ContactList extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <Header title='Lista de Contatos' />
                 <TextInput 
                     placeholder='Busque um contato...'
                     value={this.state.searchContact}
