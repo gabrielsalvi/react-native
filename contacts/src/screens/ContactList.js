@@ -3,6 +3,7 @@ import {
     FlatList,
     SafeAreaView,
     StyleSheet,
+    Text,
     TextInput,
     TouchableHighlight,
     View
@@ -11,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 
 import Contact from '../components/Contact';
-import { colors } from '../../public/styles';
+import { colors, fonts } from '../../public/styles';
 
 const contacts = [
     {
@@ -44,6 +45,18 @@ export default class ContactList extends Component {
         }
     }
 
+    renderList = () => (
+        this.state.filteredContacts.length !== 0 
+            ? <FlatList
+                data={this.state.filteredContacts}
+                renderItem={({ item: contact }) => <Contact {...contact} />}
+                keyExtractor={contact => contact.id.toString()}
+            />
+            : <View style={styles.messageBar}>
+                <Text style={styles.message}>Nenhum contato encontrado</Text>
+            </View>
+    )
+
     filterContacts = () => {
         const filteredContacts = this.state.contacts
             .filter(contact => contact.name.toLocaleLowerCase().includes(this.state.searchContact.toLocaleLowerCase()))
@@ -54,16 +67,16 @@ export default class ContactList extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <TextInput 
-                    placeholder='Busque um contato...'
-                    value={this.state.searchContact}
-                    onChangeText={text => this.setState({ searchContact: text }, this.filterContacts)}
-                />
-                <FlatList
-                    data={this.state.filteredContacts}
-                    renderItem={({ item: contact }) => <Contact {...contact} />}
-                    keyExtractor={contact => contact.id.toString()}
-                />
+                <View style={styles.searchBar}>
+                    <Icon name='search' size={30} style={styles.icon} />
+                    <TextInput 
+                        style={styles.input}
+                        placeholder='Busque um contato...'
+                        value={this.state.searchContact}
+                        onChangeText={text => this.setState({ searchContact: text }, this.filterContacts)}
+                    />
+                </View>
+                { this.renderList() }
                 <View style={styles.buttonContainer}>
                     <TouchableHighlight 
                         style={styles.button} 
@@ -80,6 +93,32 @@ export default class ContactList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    searchBar: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: colors.border,
+        alignItems: 'center'
+    },
+    icon: {
+        marginHorizontal: 10
+    },
+    input: {
+        width: '100%',
+        fontFamily: fonts.main,
+        fontSize: fonts.inputSize,
+        padding: 10,
+    },
+    messageBar: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    message: {
+      
+        fontFamily: fonts.main,
+        fontSize: fonts.inputSize,
+        padding: 10,
     },
     buttonContainer: {
         alignItems: 'flex-end'
