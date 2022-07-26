@@ -10,8 +10,6 @@ import Icon from 'react-native-vector-icons/Feather';
 import { colors, fonts } from '../../public/styles';
 
 export default props => {
-    const [firstName, setFirstName] = useState()
-
     const icon = props.icon 
                     ? <Icon name={props.icon} size={30} color={colors.formIcon} style={styles.icon} />
                     : null
@@ -24,8 +22,8 @@ export default props => {
             <TextInput
                 style={[styles.input, inputStyle]}
                 placeholder={props.placeholder}
-                value={firstName}
-                onChangeText={firstName => setFirstName(firstName)}
+                value={props.value}
+                onChangeText={text => props.handleChange(props.name, text)}
             />
         </View>
     )
