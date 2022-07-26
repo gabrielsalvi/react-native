@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { 
     Dimensions,
     Image,
-    Platform,
-    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -24,6 +22,16 @@ import { addPost } from '../store/actions/post'
         this.state = {
             image: null,
             comment: ''
+        }
+    }
+
+    componentDidUpdate = prevProps => {
+        if (prevProps.loading && !this.props.loading) {
+            this.setState({
+                image: null,
+                comment: ''
+            })
+            this.props.navigation.navigate('Feed')
         }
     }
 
@@ -73,8 +81,6 @@ import { addPost } from '../store/actions/post'
                 }
             ]
         })
-
-        this.props.navigation.navigate('Feed')
     }
 
     render() {
@@ -99,7 +105,11 @@ import { addPost } from '../store/actions/post'
                     placeholder='Leave a comment...'
                     onChangeText={comment => this.setState({ comment })}
                 />
-                <TouchableOpacity style={styles.button} onPress={this.save}>
+                <TouchableOpacity 
+                    style={[styles.button, this.props.loading ? styles.disabledButton : null]} 
+                    onPress={this.save}
+                    disabled={this.props.loading}
+                >
                     <Text style={styles.buttonText}>Share</Text>
                 </TouchableOpacity>
             </View>
@@ -141,6 +151,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    disabledButton: {
+        backgroundColor: '#AAA'
+    },
     buttonText: {
         fontSize: 20,
         color: '#FFF',
@@ -153,10 +166,11 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, posts }) => {
     return {
         email: user.email,
         name: user.name,
+        loading: posts.isUploading
     }
 }
 
