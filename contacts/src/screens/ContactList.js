@@ -26,15 +26,29 @@ const contacts = [
         phone: '49996817331',
         email: 'marbor@outlook.com'
     },
+    {
+        id: Math.random(),
+        name: 'Thomas Muller',
+        phone: '54981931243',
+        email: 'muller@outlook.com'
+    },
 ]
 
 export default class ContactList extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
+            contacts: [...contacts],
+            filteredContacts: [...contacts],
             searchContact: ''
         }
+    }
+
+    filterContacts = () => {
+        const filteredContacts = this.state.contacts
+            .filter(contact => contact.name.toLocaleLowerCase().includes(this.state.searchContact.toLocaleLowerCase()))
+
+        this.setState({ filteredContacts })
     }
 
     render() {
@@ -43,11 +57,11 @@ export default class ContactList extends Component {
                 <TextInput 
                     placeholder='Busque um contato...'
                     value={this.state.searchContact}
-                    onChangeText={text => this.setState({ searchContact: text })}
+                    onChangeText={text => this.setState({ searchContact: text }, this.filterContacts)}
                 />
                 <FlatList
-                    data={contacts}
-                    renderItem={({item: contact}) => <Contact {...contact} />}
+                    data={this.state.filteredContacts}
+                    renderItem={({ item: contact }) => <Contact {...contact} />}
                     keyExtractor={contact => contact.id.toString()}
                 />
                 <View style={styles.buttonContainer}>
