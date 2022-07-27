@@ -4,12 +4,10 @@ const reducer = (state = initialState, action) => {
 }
 
 const actions = { 
-    addPost: (state, action) => {
+    setPosts: (state, action) => {
         return {
             ...state,
-            posts: state.posts.concat({
-                ...action.payload
-            })
+            posts: action.payload
         }
     },
     addComment: (state, action) => {
@@ -28,35 +26,24 @@ const actions = {
                 return newPost;
             })
         }
+    },
+    creatingPost: (state, action) => {
+        return {
+            ...state,
+            isUploading: true
+        }
+    },
+    postCreated: (state, action) => {
+        return {
+            ...state,
+            isUploading: false
+        }
     }
 }
 
 const initialState = {
-    posts: [
-        {
-            id: Math.random(),
-            nickname: 'Rafael Pereira Filho',
-            email: 'rafaelpprrflh@gmail.com',
-            image: require('../../../assets/imgs/fence.jpg'),
-            comments: [
-                {
-                nickname: 'John Ray Sheldon',
-                comment: 'Stunning!'
-                },
-                {
-                    nickname: 'Ana Julia',
-                    comment: 'Beautiful!!!'
-                }
-            ]
-        },
-        {
-            id: Math.random(),
-            nickname: 'Zinedine Zidane',
-            email: 'zizu@gmail.com',
-            image: require('../../../assets/imgs/bw.jpg'),
-            comments: []
-        }
-    ]
+    posts: [],
+    isUploading: false,
 }
 
 export default reducer
