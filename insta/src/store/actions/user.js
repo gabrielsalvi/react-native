@@ -31,7 +31,12 @@ const createUser = user => {
                     name: user.name
                 })
                 .catch(error => console.log(error))
-                .then(res => console.log('User created successfully'))
+                .then(() => {
+                    delete user.password;
+                    user.id = res.data.localId
+                    dispatch(userLogged(user))
+                    dispatch(userLoaded())
+                })
             }
         })
     }

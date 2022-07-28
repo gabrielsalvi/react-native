@@ -7,10 +7,13 @@ import { createUser } from '../store/actions/user';
 class Register extends Component {
     constructor() {
         super();
-        this.state = {
-            name: '',
-            email: '',
-            password: '',
+        this.state = { ...initialState }
+    }
+
+    componentDidUpdate = prevProps => {
+        if (prevProps.isLoading && !this.props.isLoading) {
+            this.setState({ ...initialState })
+            this.props.navigation.navigate('Feed')
         }
     }
 
@@ -83,10 +86,22 @@ const styles = StyleSheet.create({
     },
 })
 
+const initialState = {
+    name: '',
+    email: '',
+    password: '',
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         onCreateUser: user => dispatch(createUser(user))
     }
 }
 
-export default connect(null, mapDispatchToProps)(Register)
+const mapStateToProps = ({ user }) => {
+    return {
+        isLoading: user.isLoading
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)
