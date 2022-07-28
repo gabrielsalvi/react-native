@@ -28,22 +28,24 @@ const Navigator = props => {
     }
 
     const Auth = () => (
-        <AuthStack.Navigator screenOptions={{headerShown: false}}>
+        <AuthStack.Navigator>
             <AuthStack.Screen name="Login" component={Login} />
             <AuthStack.Screen name="Register" component={Register} /> 
         </AuthStack.Navigator>
     )
 
-    const AuthOrProfile = () => (
-        <AuthProfileStack.Navigator initialRouteName='Auth'>
-            <AuthProfileStack.Screen name="Home" component={Profile} />
-            <AuthProfileStack.Screen name="Auth" component={Auth} /> 
-        </AuthProfileStack.Navigator>
-    )
-
+    const AuthOrProfile = () => {
+        const initialRoute = props.token ? 'Home' : 'Auth';
+        return (
+            <AuthProfileStack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
+                <AuthProfileStack.Screen name="Home" component={Profile} />
+                <AuthProfileStack.Screen name="Auth" component={Auth} /> 
+            </AuthProfileStack.Navigator>
+        )
+    }
 
     const AppNavigator = () => {
-        const addPhoto = props.name
+        const addPhoto = props.token
             ? <AppStack.Screen name='AddPhoto' component={AddPhoto} />
             : null
 
