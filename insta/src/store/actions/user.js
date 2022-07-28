@@ -4,6 +4,8 @@ import axios from 'axios';
 const authBaseUrl = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
 const API_KEY = ''
 
+import { setMessage } from './message';
+
 const userLogged = user => {
     return {
         type: USER_LOGGED_IN,
@@ -24,18 +26,25 @@ const createUser = user => {
             password: user.password,
             returnSecureToken: true
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            dispatch(setMessage({
+                title: 'Error',
+                body: 'Unable to register user!'
+            }))
+        })
         .then(res => {
             if (res.data.localId) {
                 axios.put(`/users/${res.data.localId}.json`, {
                     name: user.name
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    dispatch(setMessage({
+                        title: 'Error',
+                        body: 'Unable to register user!'
+                    }))
+                })
                 .then(() => {
-                    delete user.password;
-                    user.id = res.data.localId
-                    dispatch(userLogged(user))
-                    dispatch(userLoaded())
+                    dispatch(login(user))
                 })
             }
         })
@@ -62,11 +71,22 @@ const login = user => {
             password: user.password,
             returnSecureToken: true
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            dispatch(setMessage({
+                title: 'Error',
+                body: 'Invalid user credentials!'
+            }))
+        })
         .then(res => {
             if (res.data.localId) {
+                user.token = res.data.idToken
                 axios.get(`/users/${res.data.localId}.json`)
-                .catch(error => console.log(error))
+                .catch(error => {
+                    dispatch(setMessage({
+                        title: 'Error',
+                        body: 'Invalid user credentials!'
+                    }))
+                })
                 .then(res => {
                     delete user.password;
                     user.name = res.data.name

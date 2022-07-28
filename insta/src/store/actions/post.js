@@ -1,5 +1,7 @@
 import axios from 'axios'
-import { ADD_COMMENT, CREATING_POST, POST_CREATED, SET_POSTS } from './actionTypes'
+import { CREATING_POST, POST_CREATED, SET_POSTS } from './actionTypes'
+
+import { setMessage } from './message';
 
 const addPost = post => {
     return (dispatch, getState) => {
@@ -11,11 +13,21 @@ const addPost = post => {
             data: {
                 image: post.image.base64
             }
-        }).catch (error => console.log(error))
+        }).catch (error => {
+            dispatch(setMessage({
+                title: 'Error',
+                body: 'Unable to publish post!'
+            }))
+        })
         .then(res => {
             post.image = res.data.imageUrl
             axios.post(`/posts.json?auth=${getState().user.token}`, { ...post })
-            .catch(error => console.log(error))
+            .catch(error => {
+                dispatch(setMessage({
+                    title: 'Error',
+                    body: 'Unable to publish post!'
+                }))
+            })
             .then(res => {
                 dispatch(fetchPosts())
                 dispatch(postCreated())
@@ -28,12 +40,20 @@ const addComment = payload => {
     return (dispatch, getState) => {
         const path = `/posts/${payload.postId}.json?auth=${getState().user.token}`;
         axios.get(path)
-        .catch(error => console.log(error))
+        .catch(error => {
+            dispatch(setMessage({
+                title: 'Error',
+                body: 'Unable to comment post!'
+            }))
+        })
         .then(res => {
             const comments = res.data.comments || []
             comments.push(payload.comment)
             axios.patch(path, { comments })
-            .catch(error => console.log(error))
+            .catch(setMessage({
+                title: 'Error',
+                body: 'Unable to comment post!'
+            }))
             .then(res => {
                 dispatch(fetchPosts())
             })
@@ -51,7 +71,10 @@ const setPosts = posts => {
 const fetchPosts = () => {
     return dispatch => {
         axios.get('/posts.json')
-        .catch(error => console.log(error))
+        .catch(setMessage({
+            title: 'Error',
+            body: 'Unable to fetch posts!'
+        }))
         .then(res => {
             const rawPosts = res.data
             const posts = []
