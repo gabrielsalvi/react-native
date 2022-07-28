@@ -3,10 +3,16 @@ const reducer = (state = initialState, action) => {
     return fn ? fn(state, action) : state
 }
 
-const actions = { 
-    login: (state, action) => {
+const actions = {
+    loadingUser: (state, action) => {
         return {
-        ...state,
+            ...state,
+            isLoading: true
+        }
+    },
+    userLogged: (state, action) => {
+        return {
+            ...state,
             name: action.payload.name,
             email: action.payload.email
         }
@@ -17,12 +23,19 @@ const actions = {
             name: '',
             email: ''
         }
+    },
+    userLoaded: (state, action) => {
+        return {
+            ...state,
+            isLoading: false
+        }
     }
 }
 
 const initialState = {
-    name: '',
-    email: ''
+    name: null,
+    email: null,
+    isLoading: false,
 }
 
 export default reducer;

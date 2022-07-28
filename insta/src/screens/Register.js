@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export default class Register extends Component {
+import { connect } from 'react-redux';
+import { createUser } from '../store/actions/user';
+
+class Register extends Component {
     constructor() {
         super();
         this.state = {
@@ -9,6 +12,10 @@ export default class Register extends Component {
             email: '',
             password: '',
         }
+    }
+
+    register = () => {
+        this.props.onCreateUser(this.state)
     }
 
     render() {
@@ -35,7 +42,7 @@ export default class Register extends Component {
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
                 />
-                <TouchableOpacity onPress={() => {}} style={styles.button}>
+                <TouchableOpacity onPress={this.register} style={styles.button}>
                     <Text style={styles.buttonText}>Save</Text>
                 </TouchableOpacity>
             </View>
@@ -75,3 +82,11 @@ const styles = StyleSheet.create({
         color: '#FFF',
     },
 })
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onCreateUser: user => dispatch(createUser(user))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Register)

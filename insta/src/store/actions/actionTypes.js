@@ -1,4 +1,4 @@
-const USER_LOGGED_IN = 'login'
+const USER_LOGGED_IN = 'userLogged'
 const USER_LOGGED_OUT = 'logout'
 const ADD_COMMENT = 'addComment'
 const SET_POSTS = 'setPosts'
