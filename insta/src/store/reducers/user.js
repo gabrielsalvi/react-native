@@ -14,14 +14,13 @@ const actions = {
         return {
             ...state,
             name: action.payload.name,
-            email: action.payload.email
+            email: action.payload.email,
+            token: action.payload.token
         }
     },
     logout: (state, action) => {
         return {
-            ...state,
-            name: '',
-            email: ''
+            ...initialState
         }
     },
     userLoaded: (state, action) => {
@@ -36,6 +35,7 @@ const initialState = {
     name: null,
     email: null,
     isLoading: false,
+    token: null
 }
 
 export default reducer;

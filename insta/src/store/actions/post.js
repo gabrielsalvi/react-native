@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ADD_COMMENT, CREATING_POST, POST_CREATED, SET_POSTS } from './actionTypes'
 
 const addPost = post => {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(creatingPost())
         axios({
             url: 'uploadImage',
@@ -14,7 +14,7 @@ const addPost = post => {
         }).catch (error => console.log(error))
         .then(res => {
             post.image = res.data.imageUrl
-            axios.post('/posts.json', { ...post })
+            axios.post(`/posts.json?auth=${getState().user.token}`, { ...post })
             .catch(error => console.log(error))
             .then(res => {
                 dispatch(fetchPosts())
@@ -25,14 +25,13 @@ const addPost = post => {
 }
 
 const addComment = payload => {
-    return dispatch => {
-        const path = `/posts/${payload.postId}.json`;
+    return (dispatch, getState) => {
+        const path = `/posts/${payload.postId}.json?auth=${getState().user.token}`;
         axios.get(path)
         .catch(error => console.log(error))
         .then(res => {
             const comments = res.data.comments || []
             comments.push(payload.comment)
-            
             axios.patch(path, { comments })
             .catch(error => console.log(error))
             .then(res => {
