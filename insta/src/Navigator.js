@@ -14,10 +14,9 @@ import Register from './screens/Register';
 
 const AppStack = createBottomTabNavigator();
 const AuthStack = createNativeStackNavigator();
-const AuthProfileStack = createNativeStackNavigator();
 const SplashStack = createNativeStackNavigator();
 
-const Navigator = props => {
+const Navigator = ({ token }) => {
     const menuOptions = route => {
         return {
             initialRouteName: 'Feed',
@@ -27,41 +26,35 @@ const Navigator = props => {
         }
     }
 
-    const Auth = () => (
-        <AuthStack.Navigator>
-            <AuthStack.Screen name="Login" component={Login} />
-            <AuthStack.Screen name="Register" component={Register} /> 
+    const AuthNavigator = () => (
+        <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+            <AuthStack.Screen name='Login' component={Login} />
+            <AuthStack.Screen name='Register' component={Register} /> 
         </AuthStack.Navigator>
     )
 
-    const AuthOrProfile = () => {
-        const initialRoute = props.token ? 'Home' : 'Auth';
-        return (
-            <AuthProfileStack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
-                <AuthProfileStack.Screen name="Home" component={Profile} />
-                <AuthProfileStack.Screen name="Auth" component={Auth} /> 
-            </AuthProfileStack.Navigator>
-        )
-    }
-
     const AppNavigator = () => {
-        const addPhoto = props.token
+        const AddPhotoScreen = token
             ? <AppStack.Screen name='AddPhoto' component={AddPhoto} />
             : null
+
+        const AuthOrProfileScreen = token
+            ? <AppStack.Screen name='Profile' component={Profile} />
+            : <AppStack.Screen name='Auth' component={AuthNavigator} />
 
         return (
             <AppStack.Navigator screenOptions={({ route }) => menuOptions(route)}>
                 <AppStack.Screen name='Feed' component={Feed} />
-                {addPhoto}
-                <AppStack.Screen name='Profile' component={AuthOrProfile} />
+                { AddPhotoScreen }
+                { AuthOrProfileScreen }
             </AppStack.Navigator>
         )
     }
 
     const SplashNavigator = () => (
         <SplashStack.Navigator screenOptions={{ headerShown: false }} >
-            <SplashStack.Screen name="Splash" component={Splash} />
-            <SplashStack.Screen name="App" component={AppNavigator} />
+            <SplashStack.Screen name='Splash' component={Splash} />
+            <SplashStack.Screen name='App' component={AppNavigator} />
         </SplashStack.Navigator>
     )
 
@@ -75,12 +68,13 @@ const Navigator = props => {
 const icons = {
     Feed: 'home',
     AddPhoto: 'camera',
+    Auth: 'user',
     Profile: 'user'
 }
 
 const mapStateToProps = ({ user }) => {
     return {
-        ...user
+        token: user.token
     }
 }
 

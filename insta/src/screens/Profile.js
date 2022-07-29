@@ -8,7 +8,6 @@ import { logout } from '../store/actions/user'
 class Profile extends Component {
     logout = () => {
         this.props.onLogout();
-        this.props.navigation.navigate('Auth')
     }
 
     render() {
