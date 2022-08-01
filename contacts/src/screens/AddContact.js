@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext, useState } from 'react';
 import { 
     StyleSheet,
     Text,
@@ -6,71 +6,86 @@ import {
     View
 } from 'react-native';
 
+import ContactsContext from '../context/ContactsContext';
 import FormInput from '../components/FormInput';
 import { colors, fonts } from '../../public/styles';
 
-export default class AddContact extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            firstName: '',
-            lastName: '',
-            phone: '',
-            email: '',
+export default props => {
+    const context = useContext(ContactsContext)
+
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [email, setEmail] = useState('')
+
+    const addContact = () => {
+        const contact = { 
+            firstName,
+            lastName,
+            phone,
+            email
+        }
+
+        context.dispatch({ type: 'addContact', payload: contact })
+
+        props.navigation.goBack();
+    }
+
+    const handleChange = (name, value) => {
+        switch (name) {
+            case 'firstName':
+                setFirstName(value);
+                break;
+            case 'lastName':
+                setLastName(value);
+                break;
+            case 'phone':
+                setPhone(value);
+                break;
+            case 'email':
+                setEmail(value);
+                break;
         }
     }
 
-    handleChange = (name, value) => {
-        this.setState({ [name]: value });
-    }
-
-    addContact = () => {
-        const contact = { ...this.state }
-
-        // return contact;
-        console.log(contact)
-    }
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.form}>
-                    <FormInput 
-                        icon='user'
-                        name='firstName'
-                        placeholder='Nome'
-                        value={this.state.firstName}
-                        handleChange={this.handleChange} 
-                    />
-                    <FormInput 
-                        name='lastName'
-                        placeholder='Sobrenome'
-                        value={this.state.lastName}
-                        handleChange={this.handleChange} 
-                    />
-                    <FormInput 
-                        icon='phone'
-                        name='phone'
-                        placeholder='Nº Telefone'
-                        value={this.state.phone}
-                        handleChange={this.handleChange} 
-                    />
-                    <FormInput
-                        icon='mail'
-                        name='email' 
-                        placeholder='Email'
-                        value={this.state.email}
-                        handleChange={this.handleChange}
-                    />
-                    <View style={styles.buttonsContainer}>
-                        <TouchableHighlight style={styles.button} onPress={this.addContact}>
-                            <Text style={styles.buttonText}>Salvar</Text>
-                        </TouchableHighlight>
-                    </View>
+    return (
+        <View style={styles.container}>
+            <View style={styles.form}>
+                <FormInput 
+                    icon='user'
+                    name='firstName'
+                    placeholder='Nome'
+                    value={firstName}
+                    handleChange={handleChange} 
+                />
+                <FormInput 
+                    name='lastName'
+                    placeholder='Sobrenome'
+                    value={lastName}
+                    handleChange={handleChange} 
+                />
+                <FormInput 
+                    icon='phone'
+                    name='phone'
+                    placeholder='Nº Telefone'
+                    value={phone}
+                    handleChange={handleChange} 
+                />
+                <FormInput
+                    icon='mail'
+                    name='email' 
+                    placeholder='Email'
+                    value={email}
+                    handleChange={handleChange}
+                />
+                <View style={styles.buttonsContainer}>
+                    <TouchableHighlight style={styles.button} onPress={addContact}>
+                        <Text style={styles.buttonText}>Salvar</Text>
+                    </TouchableHighlight>
                 </View>
             </View>
-        )
-    }
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({

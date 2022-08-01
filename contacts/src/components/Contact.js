@@ -10,10 +10,12 @@ export default props => {
         secure: true
     }
 
+    const displayName = props.firstName + ' ' + props.lastName
+
     return (
         <View style={styles.container}>
             <Gravatar options={gravatarOptions} style={styles.avatar} />
-            <Text style={styles.name}>{props.name}</Text>
+            <Text style={styles.name}>{displayName}</Text>
         </View>
     )
 }

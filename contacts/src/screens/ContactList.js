@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { 
     FlatList,
     SafeAreaView,
@@ -11,44 +11,22 @@ import {
 
 import Icon from 'react-native-vector-icons/Feather';
 
+import ContactsContext from '../context/ContactsContext';
 import Contact from '../components/Contact';
 import { colors, fonts } from '../../public/styles';
 
-const contacts = [
-    {
-        id: Math.random(),
-        name: 'Julio Cesar',
-        phone: '(54)98414-5616',
-        email: 'julio@gmail.com'
-    },
-    {
-        id: Math.random(),
-        name: 'Marechal Bormann',
-        phone: '49996817331',
-        email: 'marbor@outlook.com'
-    },
-    {
-        id: Math.random(),
-        name: 'Thomas Muller',
-        phone: '54981931243',
-        email: 'muller@outlook.com'
-    },
-]
+export default props => {
+    const context = useContext(ContactsContext)
+    const [searchContact, setSearchContact] = useState('')
+    
+    useEffect(() => {
+        context.dispatch({ type: 'filterContacts', payload: searchContact })
+    }, [searchContact]);
 
-export default class ContactList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            contacts: [...contacts],
-            filteredContacts: [...contacts],
-            searchContact: ''
-        }
-    }
-
-    renderList = () => (
-        this.state.filteredContacts.length !== 0 
+    const renderList = () => (
+        context.state.contacts.length !== 0 
             ? <FlatList
-                data={this.state.filteredContacts}
+                data={context.state.filteredContacts}
                 renderItem={({ item: contact }) => <Contact {...contact} />}
                 keyExtractor={contact => contact.id.toString()}
             />
@@ -57,37 +35,30 @@ export default class ContactList extends Component {
             </View>
     )
 
-    filterContacts = () => {
-        const filteredContacts = this.state.contacts
-            .filter(contact => contact.name.toLocaleLowerCase().includes(this.state.searchContact.toLocaleLowerCase()))
-
-        this.setState({ filteredContacts })
-    }
-
-    render() {
-        return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.searchBar}>
-                    <Icon name='search' size={30} style={styles.icon} />
-                    <TextInput 
-                        style={styles.input}
-                        placeholder='Busque um contato...'
-                        value={this.state.searchContact}
-                        onChangeText={text => this.setState({ searchContact: text }, this.filterContacts)}
-                    />
-                </View>
-                { this.renderList() }
-                <View style={styles.buttonContainer}>
-                    <TouchableHighlight 
-                        style={styles.button} 
-                        onPress={() => this.props.navigation.navigate('AddContact')}
-                    >
-                        <Icon name='user-plus' size={23} color={colors.secondary} />
-                    </TouchableHighlight>
-                </View>
-            </SafeAreaView>
-        )
-    }
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.searchBar}>
+                <Icon name='search' size={30} style={styles.icon} />
+                <TextInput 
+                    style={styles.input}
+                    placeholder='Busque um contato...'
+                    value={searchContact}
+                    onChangeText={text => {
+                        setSearchContact(text);
+                    }}
+                />
+            </View>
+            { renderList() }
+            <View style={styles.buttonContainer}>
+                <TouchableHighlight 
+                    style={styles.button} 
+                    onPress={() => props.navigation.navigate('AddContact')}
+                >
+                    <Icon name='user-plus' size={23} color={colors.secondary} />
+                </TouchableHighlight>
+            </View>
+        </SafeAreaView>
+    )
 }
 
 const styles = StyleSheet.create({
