@@ -14,6 +14,19 @@ const actions = {
             filteredContacts: [...contacts]
         }
     },
+    updateContact: (state, action) => {
+        const contactToUpdate = { ...action.payload }
+        const contacts = [
+            ...state.contacts.filter(contact => contact.id != contactToUpdate.id), 
+            contactToUpdate
+        ];
+
+        return {
+            ...state,
+            contacts: [...contacts],
+            filteredContacts: [...contacts]
+        }
+    },
     filterContacts: (state, action) => {
         const filteredContacts = state.contacts
             .filter(contact => {

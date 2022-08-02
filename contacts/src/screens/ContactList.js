@@ -27,7 +27,7 @@ export default props => {
         context.state.contacts.length !== 0 
             ? <FlatList
                 data={context.state.filteredContacts}
-                renderItem={({ item: contact }) => <Contact {...contact} />}
+                renderItem={({ item: contact }) => <Contact {...contact} {...props} />}
                 keyExtractor={contact => contact.id.toString()}
             />
             : <View style={styles.messageBar}>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { Component } from 'react';
 import { 
     StyleSheet,
     Text,
@@ -10,82 +10,86 @@ import ContactsContext from '../context/ContactsContext';
 import FormInput from '../components/FormInput';
 import { colors, fonts } from '../../public/styles';
 
-export default props => {
-    const context = useContext(ContactsContext)
+export default class AddContact extends Component {
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [phone, setPhone] = useState('')
-    const [email, setEmail] = useState('')
+    static contextType = ContactsContext
 
-    const addContact = () => {
-        const contact = { 
-            firstName,
-            lastName,
-            phone,
-            email
-        }
+    constructor(props) {
+        super(props);
+        const contact = { ...props.route.params }
+        console.log(contact)
 
-        context.dispatch({ type: 'addContact', payload: contact })
-
-        props.navigation.goBack();
+        this.state = contact.id
+            ? {
+                id: contact.id,
+                firstName: contact.firstName,
+                lastName: contact.lastName,
+                phone: contact.phone,
+                email: contact.email
+            }
+            : {
+                firstName: '',
+                lastName: '',
+                phone: '',
+                email: ''
+            }
     }
 
-    const handleChange = (name, value) => {
-        switch (name) {
-            case 'firstName':
-                setFirstName(value);
-                break;
-            case 'lastName':
-                setLastName(value);
-                break;
-            case 'phone':
-                setPhone(value);
-                break;
-            case 'email':
-                setEmail(value);
-                break;
+    addContact = () => {
+        const contactToSave = { ...this.state }
+
+        if (contactToSave.id) {
+            this.context.dispatch({ type: 'updateContact', payload: contactToSave })
+        } else {
+            this.context.dispatch({ type: 'addContact', payload: contactToSave })
         }
+        this.props.navigation.goBack();
     }
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.form}>
-                <FormInput 
-                    icon='user'
-                    name='firstName'
-                    placeholder='Nome'
-                    value={firstName}
-                    handleChange={handleChange} 
-                />
-                <FormInput 
-                    name='lastName'
-                    placeholder='Sobrenome'
-                    value={lastName}
-                    handleChange={handleChange} 
-                />
-                <FormInput 
-                    icon='phone'
-                    name='phone'
-                    placeholder='Nº Telefone'
-                    value={phone}
-                    handleChange={handleChange} 
-                />
-                <FormInput
-                    icon='mail'
-                    name='email' 
-                    placeholder='Email'
-                    value={email}
-                    handleChange={handleChange}
-                />
-                <View style={styles.buttonsContainer}>
-                    <TouchableHighlight style={styles.button} onPress={addContact}>
-                        <Text style={styles.buttonText}>Salvar</Text>
-                    </TouchableHighlight>
+    handleChange = (name, value) => {
+        this.setState({ [name] : value })
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <View style={styles.form}>
+                    <FormInput 
+                        icon='user'
+                        name='firstName'
+                        placeholder='Nome'
+                        value={this.state.firstName}
+                        handleChange={this.handleChange} 
+                    />
+                    <FormInput 
+                        name='lastName'
+                        placeholder='Sobrenome'
+                        value={this.state.lastName}
+                        handleChange={this.handleChange} 
+                    />
+                    <FormInput 
+                        icon='phone'
+                        name='phone'
+                        placeholder='Nº Telefone'
+                        value={this.state.phone}
+                        handleChange={this.handleChange} 
+                    />
+                    <FormInput
+                        icon='mail'
+                        name='email' 
+                        placeholder='Email'
+                        value={this.state.email}
+                        handleChange={this.handleChange}
+                    />
+                    <View style={styles.buttonsContainer}>
+                        <TouchableHighlight style={styles.button} onPress={this.addContact}>
+                            <Text style={styles.buttonText}>Salvar</Text>
+                        </TouchableHighlight>
+                    </View>
                 </View>
             </View>
-        </View>
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({

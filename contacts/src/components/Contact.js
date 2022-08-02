@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Gravatar } from 'react-native-gravatar';
 
 import { colors, fonts } from '../../public/styles';
@@ -10,13 +10,24 @@ export default props => {
         secure: true
     }
 
-    const displayName = props.firstName + ' ' + props.lastName
+    const contact = {
+        id: props.id,
+        firstName: props.firstName,
+        lastName: props.lastName,
+        phone: props.phone,
+        email: props.email
+    }
+
+    const displayName = contact.firstName + ' ' + contact.lastName
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity 
+            style={styles.container} 
+            onPress={() => props.navigation.navigate('AddContact', contact)}
+        >
             <Gravatar options={gravatarOptions} style={styles.avatar} />
             <Text style={styles.name}>{displayName}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
