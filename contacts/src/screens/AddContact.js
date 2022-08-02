@@ -17,7 +17,6 @@ export default class AddContact extends Component {
     constructor(props) {
         super(props);
         const contact = { ...props.route.params }
-        console.log(contact)
 
         this.state = contact.id
             ? {
